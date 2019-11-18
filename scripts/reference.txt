@@ -1,0 +1,67 @@
+**************************************************
+
+PARSE XML FILE
+
+tree = etree.parse(<filename>)
+root = tree.getroot()
+
+OR
+
+parser = etree.XMLParser(dtd_validation=False)
+tree = etree.parse(<filename>,parser)
+root = tree.getroot()
+
+**************************************************
+
+METHODS FOR ELEMENTS
+
+.text           element text            string
+.tag            element tag             string
+.attrib         element attributes      dictionary
+.keys()         attribute names         list of strings
+.values()       attribute values        list of strings
+
+**************************************************
+
+XPATH
+
+root.xpath("<query>")
+
+PATHS
+
+name                            selects all name nodes
+/                               selects from the root node (/root)
+//                              selects nodes regardless of location (//element_name)
+//@attrib                       selects all attributes named 'attrib'
+/root/child                     selects child tags
+/root//child                    selects all child tags with ancestor root
+/root/child[1]                  selects the first child
+/root/child[last()]             selects the last child
+/root/child[last()-1]           selects the last but one child  
+/root/child[position()<3]       selects first two child elements 
+
+
+FILTERING
+
+//element_name[@attrib]         selects all element_name elements with attribute 'attrib'
+//element_name[@*]              selects all element_name elements with an attribute
+//element_name[@attrib='val']   selects all element_name elements with attribute 'attrib' having value 'val'
+/root/child[criteria]           selects all children that meet the criteria (=,<=,<,>,>=,!=)
+/root/parent[criteria]/child    selects all children whose parents meet the criteria
+
+
+WILDCARDS 
+
+*           matches any element node
+@*          matches any attribute node
+node()      matches any node of any kind
+
+
+RETURNING
+
+text()      returns the text
+contains()
+starts-with()
+
+.           this element
+..          the parent element

@@ -1,0 +1,52 @@
+<score-partwise>
+	<identification>
+		<encoding>
+			<software>
+	<part-list>
+		<part-group type="" number="">
+			<group-name>
+			<group-abbreviation>
+			<group-symbol>
+		<score-part id="">
+			<part-name>
+			<score-instrument id="">
+				<instrument-name>
+			<midi-instrument id="">
+				<midi-channel>
+				<midi-program>
+		<part-group type="" number=""/>
+	<part id="">
+		<measure number="">
+			<attributes>
+				<divisions>
+				<key>
+					<fifths>
+					<mode>
+				<time>
+					<beats>
+					<beat-type>
+				<clef>
+					<sign>
+					<line>
+			<note>
+				<rest/>
+				<grace/>
+				<pitch>
+					<step>
+					<alter>
+					<octave>
+				<duration>
+				<tie type=""/>
+				<voice>
+				<type>
+				<dot/>
+				<accidental>
+				<stem>
+				<beam number="1">
+				<notations>
+					<tied type="start|stop"/>
+					<slur type="start|stop" number="1"/>
+					<ornaments>
+						<trill-mark placement="above|below"/>
+			<barline location="right">
+					<bar-style>

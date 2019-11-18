@@ -1,0 +1,61 @@
+<score-partwise>
+
+	<identification>
+		<encoding>
+			<software>
+
+	<part-list>
+
+		<part-group type="start" number="1">
+			<group-name>
+			<group-abbreviation>
+			<group-symbol>
+
+		<score-part id="P1">
+			<part-name>
+			<score-instrument id="P1-I17">
+				<instrument-name>
+			<midi-instrument id="P1-I17">
+				<midi-channel>
+				<midi-program>
+		<part-group type="stop" number="1"/>
+
+	<part id="P1">
+
+		<measure number="1">
+
+			<attributes>
+				<divisions>
+				<key>
+					<fifths>
+					<mode>
+				<time>
+					<beats>
+					<beat-type>
+				<clef>
+					<sign>
+					<line>
+
+			<note>
+				<rest/>
+				<grace/>
+				<pitch>
+					<step>A|B|C|D|E|F|G
+					<alter>-1|1
+					<octave>1|2|3|4|5|6|7|8
+				<duration>32|24|16|12|8|6|4|2|1
+				<tie type="start"/>
+				<voice>
+				<type>whole|half|quarter|eighth|16th|32nd
+				<dot/>
+				<accidental>flat|sharp|natural
+				<stem>up|down
+				<beam number="1">begin|continue|end
+				<notations>
+					<tied type="start|stop"/>
+					<slur type="start|stop" number="1"/>
+					<ornaments>
+						<trill-mark placement="above|below"/>
+		
+			<barline location="right">
+					<bar-style>light-heavy
