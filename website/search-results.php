@@ -17,6 +17,8 @@ $database="lis45801fa19_bellanti_3";
 $con = mysqli_connect($host,$user,$password,$database)
    or  die('Could not connect: ' . mysql_error());
 
+$con->set_charset("utf8");
+
 // create variables from form inputs
 $input = $_POST['composer_work'];
 
@@ -54,6 +56,7 @@ while($row = mysqli_fetch_array($result))
   {
   echo "<tr>";
   echo "<td>" . $row['name'] . "</td>";
+  // echo "<td>" . mysqli_real_escape_string($con,$row['name']) . "</td>";
   echo "<td>" . $row['years'] . "</td>";
   echo "<td>" . $row['nationality'] . "</td>";
   echo "</tr>";

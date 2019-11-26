@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,500,500i,700,700i&display=swap" rel="stylesheet">
     <script src="js/main.js"></script>
 </head>

@@ -1,11 +1,6 @@
 * {
     color:#383838;
-    /* font-family: 'Lato', sans-serif; */
-    /* font-family: 'Roboto', sans-serif; */
     font-family: 'Raleway', sans-serif;
-    /* font-family: 'Source Sans Pro', sans-serif; */
-    /* font-family: 'Open Sans', sans-serif; */
-    /* font-family: sans-serif; */
     font-weight: 300;
     box-sizing: border-box;
     margin: 0;
@@ -37,7 +32,15 @@ body {
 
 
 
-.topnav {overflow: hidden;}
+.topnav {
+  background-color: rgba(255,255,255,.92);
+  overflow: hidden;
+  position:sticky;
+  position: -webkit-sticky;
+  top:0;
+  z-index: 1000;
+}
+
 .topnav-left {float: left;}
 .topnav-right {float: right;padding:14px 1em;}
 .topnav a {
@@ -78,6 +81,9 @@ body {
 
 input {
   font-size: large;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 input[type=text] {
@@ -145,6 +151,34 @@ table.results-table {
 
 
 
+#search-menu {
+  text-align: center;
+}
+
+#search-menu a {
+  cursor: pointer;
+  display: inline-block;
+  padding: 1em;
+  text-decoration: none;
+  transition: all .2s ease-in-out;
+}
+
+#search-menu a:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+}
+
+
+#work-search {
+  display: none;
+}
+
+a#composer-search-button {
+  text-decoration: underline;
+}
+
+
+
 
 
 
@@ -203,12 +237,24 @@ footer {
 
 
 @media screen and (max-width: 600px) {
+
+  body {
+    font-size:calc(.8em + 1vh);
+  }
+
   .topnav-right a {display: none;}
   .topnav a.icon {
     float: right;
     display: block;
   }
+
+  .content {
+    padding: 0 .5em;
+  }
 }
+
+
+
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive a.icon {

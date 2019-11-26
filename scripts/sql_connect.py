@@ -8,7 +8,7 @@ def connect():
     try:
         conn = mysql.connector.connect(host='canary.simmons.edu',
                                        database='lis45801fa19_bellanti_3',
-                                       user='BrandonBel',
+                                       user='bellanti',
                                        password='1924917')
         if conn.is_connected():
             print('Connected to MySQL database')

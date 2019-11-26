@@ -11,16 +11,23 @@ root = tree.getroot()
 
 
 pitches = []
+count = 0
 for e in root.xpath('//note'):
+    dot = None
+    rest = None
+    if 'dot' in [child.tag for child in e]:
+        dot = True
+    if 'rest' in [child.tag for child in e]:
+        rest = True
+
     step_list = e.xpath('.//step/text()')
     step = step_list[0] if len(step_list)>0 else ''
     octave_list = e.xpath('.//octave/text()')
     octave = octave_list[0] if len(step_list)>0 else ''
-    # print(step,octave)
+    print(count,step,octave,dot,rest)
     pitches.append(step)
-    # step = e.xpath('./pitch/step/text()')
-    # # print(step)
-
+    count+=1
+quit()
 types = []
 for e in root.xpath('//type'):
     types.append(e.text)

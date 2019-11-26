@@ -17,6 +17,9 @@ $database="lis45801fa19_bellanti_3";
 $con = mysqli_connect($host,$user,$password,$database)
    or  die('Could not connect: ' . mysql_error());
 
+$con->set_charset("utf8");
+
+
 // create variables from form inputs
 $name = $_POST['comp_name'];
 $afteryear = $_POST['comp_bornafter'];
