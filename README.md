@@ -4,6 +4,10 @@ pythagoras is an ongoing digital humanities project started by Brandon Bellanti,
 
 The goal of the project is to perform pattern recognition on music scores to identify relationships within individual works, between works by the same composer, and between works from different composers. In it's current form, pythagoras exists as a searchable database of composers and their works.
 
-For more information, visit web.simmons.edu/~bellanti/pythagoras.
+For more information, visit [the pythagoras website](web.simmons.edu/~bellanti/pythagoras).
 
 # Repository contents
+* `reference` contains background information and data relevant to the overall project
+* `scores` contains MusicXML files
+* `scripts` contains Python files to perform analysis
+* `website` contains the PHP, CSS, and JavaScript files for the web interface
