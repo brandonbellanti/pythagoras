@@ -6,7 +6,8 @@ The goal of the project is to perform pattern recognition on music scores to ide
 
 For more information and project updates, visit the [pythagoras website](http://web.simmons.edu/~bellanti/pythagoras/).
 
-# Repository contents
+# Directories
+* `database` contains files to create a MySQL database
 * `reference` contains background information and data relevant to the overall project
 * `scores` contains MusicXML files
 * `scripts` contains Python files to perform analysis
