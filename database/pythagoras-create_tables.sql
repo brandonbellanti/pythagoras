@@ -10,6 +10,16 @@ CREATE TABLE `composer` (
 );
 
 
+CREATE TABLE `era` (
+    era_id int(4) NOT NULL AUTO_INCREMENT,
+    era_name varchar(100),
+    era_start smallint(4),
+    era_end smallint(4),
+    era_period varchar(100),
+    PRIMARY KEY (era_id)
+);
+
+
 CREATE TABLE `work` (
     work_id int(10) NOT NULL AUTO_INCREMENT,
     work_title varchar(255),
@@ -27,16 +37,6 @@ CREATE TABLE `work` (
     PRIMARY KEY (work_id),
     FOREIGN KEY (comp_id) REFERENCES `composer`(comp_id),
     FOREIGN KEY (era_id) REFERENCES `era`(era_id)
-);
-
-
-CREATE TABLE `era` (
-    era_id int(4) NOT NULL AUTO_INCREMENT,
-    era_name varchar(100),
-    era_start smallint(4),
-    era_end smallint(4),
-    era_period varchar(100),
-    PRIMARY KEY (era_id)
 );
 
 
