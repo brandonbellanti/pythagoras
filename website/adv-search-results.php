@@ -41,7 +41,6 @@ $query = "SELECT concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name', con
 
 // add to query string based on user inputs
 $query = ($name) ? $query."AND concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$name}%' " :$query;
-
 $query = ($afteryear) ? $query."AND comp_birthdate > {$afteryear} " :$query;
 $query = ($beforeyear) ? $query."AND comp_birthdate < {$beforeyear} " :$query;
 $query = ($nationality) ? $query."AND comp_nationality LIKE '%{$nationality}%' " :$query;
