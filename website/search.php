@@ -30,7 +30,7 @@
     <label for="work_identifier">Work identifier:</label><br>
     <input class="no-outline" type="text" name="work_identifier" placeholder="e.g. BWV 1047"/><br><br>
     <label for="work_composer">Work composer:</label><br>
-    <input class="no-outline" type="text" name="work_composer" placeholder="e.g. BWV 1047"/><br><br>
+    <input class="no-outline" type="text" name="work_composer" placeholder="composer name"/><br><br>
     <label for="work_composedafter">Composed after year:</label><br>
     <input class="no-outline" type="text" name="work_composedafter" placeholder="YYYY"/><br><br>
     <label for="work_composedbefore">Composed before year:</label><br>

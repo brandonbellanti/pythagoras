@@ -90,7 +90,7 @@ plt.ylabel('Group')
 
 
 steps = df['step'].to_string(index=False)
-steps = re.sub(r'\n|\t| ','',s)
+steps = re.sub(r'\n|\t| ','',steps)
 print(steps)
 
 

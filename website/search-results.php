@@ -33,12 +33,21 @@ $input = str_replace(' ','%',$input);
 echo "<br>";
 
 // start query string
-$query = "SELECT concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name', concat(comp_birthdate,'-',comp_deathdate) AS 'years', comp_nationality AS 'nationality' FROM composer ";
+$query = "SELECT
+  concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name',
+  concat(comp_birthdate,'-',comp_deathdate) AS 'years',
+  comp_nationality AS 'nationality',
+  era_name AS 'era'
+FROM
+  (composer AS C JOIN composer_era AS CE ON C.comp_id = CE.comp_id)
+JOIN era AS E ON CE.era_id = E.era_id ";
 
 // add to query string based on user inputs
-if ($input) {
-  $query = $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' ";
-}
+// if ($input) {
+//   $query = $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' ";
+// }
+$query = ($input) ? $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' " :$query;
+
 // add sortby and close query
 $query = $query."ORDER BY comp_birthdate;";
 
@@ -50,15 +59,16 @@ echo "<table class='results-table'>
 <th>Name</th>
 <th>Years</th>
 <th>Nationality</th>
+<th>Era</th>
 </tr>";
 
 while($row = mysqli_fetch_array($result))
   {
   echo "<tr>";
   echo "<td>" . $row['name'] . "</td>";
-  // echo "<td>" . mysqli_real_escape_string($con,$row['name']) . "</td>";
   echo "<td>" . $row['years'] . "</td>";
   echo "<td>" . $row['nationality'] . "</td>";
+  echo "<td>" . $row['era'] . "</td>";
   echo "</tr>";
   }
 echo "</table>";
