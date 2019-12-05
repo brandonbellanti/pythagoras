@@ -35,9 +35,9 @@ echo "<br>";
 // start query string
 $query = "SELECT
   concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name',
-  concat(comp_birthdate,'-',comp_deathdate) AS 'years',
+  concat(comp_birthyear,'-',comp_deathyear) AS 'years',
   comp_nationality AS 'nationality',
-  era_name AS 'era'
+  group_concat(era_name separator ', ') AS 'era'
 FROM
   (composer AS C JOIN composer_era AS CE ON C.comp_id = CE.comp_id)
 JOIN era AS E ON CE.era_id = E.era_id ";
@@ -49,7 +49,7 @@ JOIN era AS E ON CE.era_id = E.era_id ";
 $query = ($input) ? $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' " :$query;
 
 // add sortby and close query
-$query = $query."ORDER BY comp_birthdate;";
+$query = $query."ORDER BY comp_birthyear;";
 
 
 $result = mysqli_query($con,$query);

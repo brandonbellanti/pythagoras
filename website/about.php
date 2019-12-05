@@ -14,7 +14,7 @@ The project was conceptualized as a requirement for the Prague Summer Seminar th
 <br><!-- <div class="text-center"><span class="orange regular xlarge">~</span></div> -->
 <p>The goal of the project is to perform pattern recognition on music scores to identify relationships within individual works,
 between works by the same composer, and between works from different composers.
-In it's current form, <span class="orange regular">pythagoras</span> exists as a searchable database of composers and their works.</p>
+In its current form, <span class="orange regular">pythagoras</span> exists as a searchable database of composers and their works.</p>
 <br>
 <br>
 <div id="db-diagrams">

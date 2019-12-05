@@ -132,7 +132,7 @@ CREATE TABLE `instrument` (
 CREATE TABLE `work_instrument`(
     work_id int(11) NOT NULL,
     instr_id int(11) NOT NULL,
-    part_num int(2) NOT NULL,
+    part_num int(2),
     FOREIGN KEY (work_id) REFERENCES `work`(work_id),
     FOREIGN KEY (instr_id) REFERENCES `instrument`(instr_id)
 );

@@ -1,0 +1,18 @@
+(era_name,era_start,era_end,era_period)
+("Ancient",NULL,500,"Ancient",NULL),
+("Medieval",500,1400,"Early"),
+("Ars antique",1170,1310,"Early"),
+("Ars nova",1310,1377,"Early"),
+("Ars subtilior",1360,1420,"Early"),
+("Renaissance",1400,1600,"Early"),
+("Baroque",1600,1750,"Common-practice"),
+("Galant",1720,1780,"Common-practice"),
+("Classical",1750,1820,"Common-practice"),
+("Romantic",1780,1910,"Common-practice"),
+("Modernist",1890,1950,"20th/21st century"),
+("Impressionism",1890,1925,"20th/21st century"),
+("Expressionism",1908,1925,"20th/21st century"),
+("Neoclassicism",1920,1950,"20th/21st century"),
+("Postmodern/Contemporary",1930,NULL,"20th/21st century"),
+("Experimental",1950,NULL,"20th/21st century"),
+("Minimalism",1965,NULL,"20th/21st century")

@@ -37,16 +37,16 @@ $name = str_replace(' ','%',$name);
 echo "<br>";
 
 // start query string
-$query = "SELECT concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name', concat(comp_birthdate,'-',comp_deathdate) AS 'years', comp_nationality AS 'nationality' FROM composer WHERE 1=1 ";
+$query = "SELECT concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name', concat(comp_birthyear,'-',comp_deathyear) AS 'years', comp_nationality AS 'nationality' FROM composer WHERE 1=1 ";
 
 // add to query string based on user inputs
 $query = ($name) ? $query."AND concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$name}%' " :$query;
-$query = ($afteryear) ? $query."AND comp_birthdate > {$afteryear} " :$query;
-$query = ($beforeyear) ? $query."AND comp_birthdate < {$beforeyear} " :$query;
+$query = ($afteryear) ? $query."AND comp_birthyear > {$afteryear} " :$query;
+$query = ($beforeyear) ? $query."AND comp_birthyear < {$beforeyear} " :$query;
 $query = ($nationality) ? $query."AND comp_nationality LIKE '%{$nationality}%' " :$query;
 
 // add sortby and close query
-$query = $query."ORDER BY comp_birthdate;";
+$query = $query."ORDER BY comp_birthyear;";
 
 
 $result = mysqli_query($con,$query);
