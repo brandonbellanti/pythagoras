@@ -1,0 +1,21 @@
+tempo_id,tempo_marking,tempo_rangestart,tempo_rangeend
+,Larghissimo,0,24
+,Grave,25,45
+,Lento,45,60
+,Largo,40,60
+,Larghetto,60,66
+,Adagio,66,76
+,Adagietto,72,76
+,Andante moderato,92,112
+,Andante,76,108
+,Andantino,80,108
+,Marcia moderato,83,85
+,Moderato,108,120
+,Allegretto,112,120
+,Allegro moderato,116,120
+,Allegro,120,156
+,Vivace,156,176
+,Vivacissimo,172,176
+,Allegrissimo,172,176
+,Presto,168,200
+,Prestissimo,200,
