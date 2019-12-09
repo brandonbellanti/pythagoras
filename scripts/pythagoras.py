@@ -7,9 +7,10 @@ import os
 import csv
 from collections import Counter
 
-
-if not os.path.exists('../images'):
-    os.mkdir('../images')
+# if not os.path.exists('../images'):
+#     os.mkdir('../images')
+# if not os.path.exists('../images/figures'):
+#     os.mkdir('../images/figures')
 
 
 mv_1 = "JSB_BWV1047_1"
@@ -52,48 +53,45 @@ pitch_dict = {'A0':'1','G##0':'1','Bbb0':'1','A#0':'2','Bb0':'2','Cbb1':'2','B0'
 
 for mv in mv_titles:
 
+    print("\nSTART\n")
+
+    mv_title = work_title + ', ' + mv_titles[mv]
+
+
     xml_filepath = "../scores/xml/" + mv +'.xml'
     csv_filepath = "../scores/csv/" + mv +'.csv'
     html_filepath ="../scores/html/" + mv +'.html'
-    print('%s, %s' % (work_title, mv_titles[mv]))
 
 
-tree = etree.parse(xml_filepath)
-root = tree.getroot()
+    print('Parsing XML file:',xml_filepath)
+    tree = etree.parse(xml_filepath)
+    root = tree.getroot()
 
 
-# Get information about the work
-
-parts = {}
-
-for e in root.xpath('//score-part'):
-    part = e.xpath('./@id')[0]
-    instrument = e.xpath('.//instrument-name')[0].text
-    parts[part] = instrument
+    parts = {}
+    for e in root.xpath('//score-part'):
+        part = e.xpath('./@id')[0]
+        instrument = e.xpath('.//part-name')[0].text
+        parts[part] = instrument
 
 
 
-# get key signature and time signature from attributes for part 1
+    # get key signature and time signature from attributes for part 1
 
-attrib_list = root.xpath("//part[@id='P1']/measure[@number='1']/attributes/*")
+    attrib_list = root.xpath("//part[@id='P1']/measure[@number='1']/attributes/*")
 
+    for e in attrib_list:
 
-for e in attrib_list:
+        if e.tag == 'key':
+            accidentals = e.xpath('./fifths')[0].text
+            mode = e.xpath('./mode')[0].text
+            key_sig = key_dict[accidentals]
+            key_img = '../images/key_sigs/%s.png' % accidentals
 
-    if e.tag == 'key':
-        accidentals = e.xpath('./fifths')[0].text
-        mode = e.xpath('./mode')[0].text
-        key_sig = key_dict[accidentals]
-        key_img = '../images/key_sigs/%s.png' % accidentals
-
-    if e.tag == 'time':
-        beats = e.xpath('./beats')[0].text
-        val = e.xpath('./beat-type')[0].text
-        time_sig = "%s/%s" % (beats,val)
-
-print(key_sig,time_sig)
-
-print(key_img)
+        if e.tag == 'time':
+            beats = e.xpath('./beats')[0].text
+            val = e.xpath('./beat-type')[0].text
+            time_sig = "%s/%s" % (beats,val)
 
 
 
@@ -103,126 +101,108 @@ print(key_img)
 
 
 
+    print("Writing CSV file:", csv_filepath)
+    with open(csv_filepath,'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        header = ('part','instrument','measure','pitch','step','alter','octave','duration','type','dotted','rest')
+        csv_writer.writerow(header)
+
+
+        # notes = []
+
+        for e in root.xpath('//note'):
+            
+            part = e.xpath('../..//@id')[0]
+
+            instrument = parts[part]
+            
+            measure = e.xpath('..//@number')[0]
+            
+            dotted = True if 'dot' in [child.tag for child in e] else False
+
+            rest = True if 'rest' in [child.tag for child in e] else False
+            
+            duration_list = e.xpath('.//duration/text()')
+            duration = duration_list[0] if len(duration_list)>0 else ''
+            
+            typ_list = e.xpath('.//type/text()')
+            typ = typ_list[0] if len(typ_list)>0 else ''
+
+            
+            step_list = e.xpath('.//step/text()')
+            step = step_list[0] if len(step_list)>0 else ''
+            
+            alter_list = e.xpath('.//alter/text()')
+            alter = alter_list[0] if len(alter_list)>0 else ''
+            if alter == '0':
+                accidental = ''
+            elif alter == '-1':
+                accidental = 'b'
+            elif alter == '1':
+                accidental = '#'
+            elif alter == '-2':
+                accidental = 'bb'
+            elif alter == '2':
+                accidental = '##'
+            else:
+                accidental = ''
+
+            
+            pitch = step + accidental
+            
+            octave_list = e.xpath('.//octave/text()')
+            octave = octave_list[0] if len(step_list)>0 else ''
+            
+            # notes.append((part,measure,pitch,step,alter,octave,duration,typ,dotted,rest))
+            csv_writer.writerow((part,instrument,measure,pitch,step,alter,octave,duration,typ,dotted,rest))
 
 
 
+    # df = pd.DataFrame(notes,columns=['part','measure','pitch','step','alter','octave','duration','type','dotted','rest'])
+    df = pd.read_csv(csv_filepath)
+
+    num_measures = str(df['measure'].max())
+  
+
+
+    print("Creating figures:")
+
+    col='part'
+    df.groupby(col)[col].count().plot.bar()
+    plt.tight_layout()
+    plt.title("Distribution of Notes by Part")
+    plt.xlabel("Part Number")
+    plt.ylabel("Number of Notes")
+    plt.tight_layout()
+    notefig_filepath = '../images/figures/%s-partfig.png' % mv
+    plt.savefig(notefig_filepath, dpi=300)
+    plt.clf()
+    print("\t",notefig_filepath)
+
+
+    col = 'type'
+    df[df[col]!=''].groupby(col)[col].count().sort_values().plot.barh()
+    plt.title('Distribution of Notes by Note Types')
+    plt.xlabel('Note Type')
+    plt.ylabel('Number of Notes')
+    typefig_filepath = '../images/figures/%s-typefig.png' % mv
+    plt.savefig(typefig_filepath, dpi=300)
+    plt.clf()
+    print("\t",typefig_filepath)
+
+
+    col = 'pitch'
+    df[df[col]!=''].groupby(col)[col].count().sort_values().plot.barh()
+    plt.title('Distribution of Notes by Pitch')
+    plt.xlabel('Pitch')
+    plt.ylabel('Number of Notes')
+    pitchfig_filepath = '../images/figures/%s-pitchfig.png' % mv
+    plt.savefig(pitchfig_filepath, dpi=300)
+    plt.clf()
+    print("\t",pitchfig_filepath)
 
 
 
-
-
-
-with open(csv_filepath,'w') as csv_file:
-    csv_writer = csv.writer(csv_file)
-    header = ('part','instrument','measure','pitch','step','alter','octave','duration','type','dotted','rest')
-    csv_writer.writerow(header)
-
-
-    # notes = []
-
-    for e in root.xpath('//note'):
-        
-        part = e.xpath('../..//@id')[0]
-
-        instrument = parts[part]
-        
-        measure = e.xpath('..//@number')[0]
-        
-        dotted = True if 'dot' in [child.tag for child in e] else False
-
-        rest = True if 'rest' in [child.tag for child in e] else False
-        
-        duration_list = e.xpath('.//duration/text()')
-        duration = duration_list[0] if len(duration_list)>0 else ''
-        
-        typ_list = e.xpath('.//type/text()')
-        typ = typ_list[0] if len(typ_list)>0 else ''
-
-        
-        step_list = e.xpath('.//step/text()')
-        step = step_list[0] if len(step_list)>0 else ''
-        
-        alter_list = e.xpath('.//alter/text()')
-        alter = alter_list[0] if len(alter_list)>0 else ''
-        if alter == '0':
-            accidental = ''
-        elif alter == '-1':
-            accidental = 'b'
-        elif alter == '1':
-            accidental = '#'
-        elif alter == '-2':
-            accidental = 'bb'
-        elif alter == '2':
-            accidental = '##'
-        else:
-            accidental = ''
-
-        
-        pitch = step + accidental
-        
-        octave_list = e.xpath('.//octave/text()')
-        octave = octave_list[0] if len(step_list)>0 else ''
-        
-        # notes.append((part,measure,pitch,step,alter,octave,duration,typ,dotted,rest))
-        csv_writer.writerow((part,instrument,measure,pitch,step,alter,octave,duration,typ,dotted,rest))
-
-
-
-# df = pd.DataFrame(notes,columns=['part','measure','pitch','step','alter','octave','duration','type','dotted','rest'])
-df = pd.read_csv(csv_filepath)
-
-
-# def plot_groups(column,title,x_label,y_label):
-#     col=column
-#     df[df[col]!=''].groupby(col)[col].count().sort_values().plot.barh()
-#     plt.xlabel(x_label)
-#     plt.ylabel(y_label)
-#     plt.title(title)
-#     fig_filepath = '../images/%s-%sfig.png' % (mv,col)
-#     plt.savefig(fig_filepath, dpi=300)
-#     plt.clf()
-
-# plot_groups('part','Distribution of Notes by Part','Part Number','Number of Notes')
-# plot_groups('pitch','Distribution of Notes by Pitches','Pitch','Number of Notes')
-# plot_groups('type','Distribution of Notes by Note Types','Note Types','Number of Notes')
-
-
-col='part'
-df.groupby(col)[col].count().plot.bar()
-plt.tight_layout()
-plt.title("Distribution of Notes by Part")
-plt.xlabel("Part Number")
-plt.ylabel("Number of Notes")
-plt.tight_layout()
-notefig_filepath = '../images/%s-partfig.png' % mv
-plt.savefig(notefig_filepath, dpi=300)
-plt.clf()
-
-
-col = 'type'
-df[df[col]!=''].groupby(col)[col].count().sort_values().plot.barh()
-plt.title('Distribution of Notes by Note Types')
-plt.xlabel('Note Type')
-plt.ylabel('Number of Notes')
-typefig_filepath = '../images/%s-typefig.png' % mv
-plt.savefig(typefig_filepath, dpi=300)
-plt.clf()
-
-
-col = 'pitch'
-df[df[col]!=''].groupby(col)[col].count().sort_values().plot.barh()
-plt.title('Distribution of Notes by Pitch')
-plt.xlabel('Pitch')
-plt.ylabel('Number of Notes')
-pitchfig_filepath = '../images/%s-pitchfig.png' % mv
-plt.savefig(pitchfig_filepath, dpi=300)
-plt.clf()
-
-quit()
-
-
-# pitch_df = df.groupby('pitch')['pitch'].count()
-# print(pitch_df)
 
 
 
@@ -230,118 +210,104 @@ quit()
 
 
 
-print('\nPITCH COUNTS BY PART\n')
 
-col = 'pitch'
-result = df[df[col]!=''].groupby(['part',col])[col].count()
-result_df = result.to_frame().rename (columns={col:'count'}).reset_index()
-p = len(parts)
-if p%4 == 0:
-    num_rows = int(p/4)
-    # fig, ax = plt.subplots(num_rows,3,figsize=(15,num_rows*3))
-    fig, ax = plt.subplots(num_rows,4)
-elif p%3 == 0:
-    num_rows = int(p/3)
-    # fig, ax = plt.subplots(num_rows,3,figsize=(15,num_rows*3))
-    fig, ax = plt.subplots(num_rows,3)
-elif p%2 == 0:
-    num_rows = int(p/2)
-    # fig, ax = plt.subplots(num_rows,2,figsize=(12,num_rows*4))
-    fig, ax = plt.subplots(num_rows,2)
-else:
-    num_rows = p
-    # fig, ax = plt.subplots(num_rows,1,figsize=(10,num_rows))
-    fig, ax = plt.subplots(num_rows,1)
-
-result_df.pivot(index=col,columns='part',values='count').sort_values(by="P1",ascending=False).plot.bar(subplots=True, ax=ax,legend=False, sharex=False)
-
-
-plt.tight_layout()
-plt.show()
-
-
-quit()
+    # col = 'pitch'
+    # result = df[df[col]!=''].groupby(['part',col])[col].count()
+    # result_df = result.to_frame().rename (columns={col:'count'}).reset_index()
+    # p = len(parts)
+    # if p%4 == 0:
+    #     num_rows = int(p/4)
+    #     fig, ax = plt.subplots(num_rows,4)
+    # elif p%3 == 0:
+    #     num_rows = int(p/3)
+    #     fig, ax = plt.subplots(num_rows,3)
+    # elif p%2 == 0:
+    #     num_rows = int(p/2)
+    #     fig, ax = plt.subplots(num_rows,2,figsize=(12,num_rows*4))
+    # else:
+    #     num_rows = p
+    #     fig, ax = plt.subplots(num_rows,1,figsize=(10,num_rows))
+    # result_df.pivot(index=col,columns='part',values='count').sort_values(by="P1",ascending=False).plot.bar(subplots=True, ax=ax,legend=False, sharex=False)
+    # plt.tight_layout()
+    # plt.show()
 
 
 
+    """
+    Because this song is written in the key of F major (D minor), the expected most common pitches are as follows:
+    F Major:
+    I chord: F-A-C
+    IV chord: Bb-D-F
+    V(7) chord: C-E-G(-Bb)
+    vi chord: D-F-A
+    ii chord: G-Bb-D
+
+    D Minor:
+    i chord: D-F-A
+    iv chord: G-Bb-D
+    V(7) chord: A-C#-E(-G)
+    VII  chordL Bb-D-F
+    ii°(7) chord: E-G-Bb(-C#)
+    """
 
 
 
-# ### Pitches
-"""
-Because this song is written in the key of F major (D minor), the expected most common pitches are as follows:
-F Major:
-I chord: F-A-C
-IV chord: Bb-D-F
-V(7) chord: C-E-G(-Bb)
-vi chord: D-F-A
-ii chord: G-Bb-D
-
-D Minor:
-i chord: D-F-A
-iv chord: G-Bb-D
-V(7) chord: A-C#-E(-G)
-VII  chordL Bb-D-F
-ii°(7) chord: E-G-Bb(-C#)
-"""
+    # steps = df['step'].to_string(index=False)
+    # steps = re.sub(r'\n|\t| ','',steps)
+    # print(steps)
 
 
+    # min_length = 2
+    # min_occur = 2
+    # pat = r'(?=(.{%d,}).*\1{%d,})' % (min_length, min_occur-1)
+    # step_patterns = re.findall(pat,steps)
+    # print(Counter(step_patterns))
 
+    print("Creating HTML file:", html_filepath)
+    with open(html_filepath, 'w') as html_file:
+        html_file.write("""
+    <html>
+    <body>
+    <h1>%s</h1>
+    <p>%s</p>
+    """ % (mv_title,composer))
 
+        html_file.write("""
+    <h2>Work Information</h2>
+    <h3>Composition</h3>
+        <p>Key signature: %s</p>
+        <img src="../%s" alt="key signature" width="60px">
+        <p>Time signature: %s</p>
+        <p>Number of measures: %s</p>
 
-steps = df['step'].to_string(index=False)
-steps = re.sub(r'\n|\t| ','',steps)
-print(steps)
+    <h3>Instrumentation</h3>
+        <ul>
+    """ % (key_sig,key_img,time_sig,num_measures))
 
+        for part, instrument in parts.items():
+            html_file.write("""
+                    <li>%s (%s)</li>
+            """ %(instrument,part))
 
+        html_file.write("""
+        </ul>
+    """)
 
+    quit()
 
+    """
+    <h2>Analysis</h2>
+    <h3>Most common pitches</h3>
+    <img src="../..images/figures/JSB_BWV1047_1-pitchfig.png" alt="pitch chart" width="600px">
+    <h3>Most common durations</h3>
+    <img src="images/figures/JSB_BWV1047_1-typefig.png" alt="durations chart" width="600px">
 
-min_length = 2
-min_occur = 2
-pat = r'(?=(.{%d,}).*\1{%d,})' % (min_length, min_occur-1)
-step_patterns = re.findall(pat,steps)
-print(Counter(step_patterns))
+    <h3>Notes per part</h3>
+    <img src="../..images/figures/JSB_BWV1047_1-partfig.png" alt="part chart" width="600px">
 
+    <h3></h3>Reoccurring patterns</h3>
 
-
-
-
-col = 'type'
-
-df[df[col]!=''].groupby(['part',col])[col].count().sort_values(ascending=False).plot.bar(subplots=True)
-plt.ylabel('Count')
-plt.xlabel('Note type')
-plt.title('Note types')
-
-
-
-
-
-"""
-<html>
-<body>
-<h1>Title, Movement Title<h1>
-<p>Composer</p>
-
-<h2>Work Information</h2>
-<h3>Composition
-    <p>Key signature: </p>
-    <p>Time signature: </p>
-    <p>Number of measures: </p>
-</h3>
-<h3>Instrumentation
-    <ul>
-        <li></li>
-    </ul>
-</h3>
-
-<h2>Analysis</h2>
-<h3>Most common pitches</h3>
-<h3>Most common durations</h3>
-<h3>Notes per part</h3>
-<Reoccurring patterns</h3>
-
-</body>
-</html>
-"""
+    </body>
+    </html>
+    """
+    print("\nEND\n")

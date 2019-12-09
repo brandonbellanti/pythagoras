@@ -108,7 +108,7 @@
 			</midi-instrument>
 		</score-part>
 		<score-part id="P9">
-			<part-name>Violoncello  e Cembalo</part-name>
+			<part-name>Violoncello e Cembalo</part-name>
 			<score-instrument id="P9-I17">
 				<instrument-name>Contrabass</instrument-name>
 			</score-instrument>
