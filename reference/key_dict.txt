@@ -1,0 +1,18 @@
+keys = {
+    '-7 major':'Cb major (Ab minor)',
+    '-6 major':'Gb major (Eb minor)',
+    '-5 major':'Db major (Bb minor)',
+    '-4 major':'Ab major (F minor)',
+    '-3 major':'Eb major (C minor)',
+    '-2 major':'Bb major (G minor)',
+    '-1 major':'F major (D minor)',
+    '0 major':'C major (A minor)',
+    '1 major':'G major (E minor)',
+    '2 major':'D major (B minor)',
+    '3 major':'A major (F# minor)',
+    '4 major':'E major (C# minor)',
+    '5 major':'B major (G# minor)',
+    '6 major':'F# major (D# minor)',
+    '7 major':'C# major (A# minor)'
+}
+

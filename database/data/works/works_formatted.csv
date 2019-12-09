@@ -1,0 +1,101 @@
+work_id,KEY,TIME,TEMPO
+1,20,1,Allegro
+2,4,3,Adagio di molto
+3,20,3,Allegretto
+3,20,3,Trio
+3,5,3,Allegretto
+3,5,3,Trio
+4,8,3,Allegro animato
+5,18,3,Allegro con moto
+6,21,14,Poco adagio
+7,18,4,Allegro con brio
+8,18,1,Allegro con fuoco
+9,5,11,Allegro moderato
+10,27,3,Adagio molto, tempo di marcia
+10,27,3,Tempo di marcia
+11,5,3,Allegro vivace
+12,22,4,Allegro
+13,18,5,Andante sostenuto e molto cantabile
+14,22,7,Allegro feroce
+14,8,7,Allegro feroce
+15,22,3,Allegro con brio
+16,7,3,Allegro ma non troppo
+17,23,9,Andante con moto
+18,18,9,Allegro scherzando
+19,7,5,Allegro molto
+20,8,4,Presto
+21,24,3,Allegretto scherzando
+21,24,3,Allegro vivo
+22,4,3,Poco Allegro
+23,7,4,Tempo di menuetto
+24,11,3,Allegro vivace
+25,10,4,Allegretto scherzando
+26,20,3,Allegro assai
+27,21,4,Presto
+28,8,4,Presto
+29,24,3,Allegretto scherzando
+29,24,3,Allegro vivo
+30,4,3,Poco Allegro
+31,7,4,Tempo di menuetto
+32,11,3,Allegro vivace
+33,10,4,Allegretto scherzando
+34,20,3,Allegro assai
+35,21,4,Presto
+36,10,4,Allegro non tanto
+37,18,3,Adagio
+38,22,4,Presto
+39,10,1,Allegro con spirito
+40,22,11,Allegro maestoso
+41,7,5,Poco adagio
+42,22,7,Vivace
+43,22,1,Allegro
+44,13,3,Vivace
+45,24,9,Allegretto grazioso
+46,7,3,Allegro
+47,3,9,Allegretto grazioso
+48,18,10,Poco Adagio
+48,18,10,Vivace
+49,18,4,"Moderato, quasi menuetto"
+50,8,3,Allegro vivace
+51,4,4,"Grazioso e lento, ma non troppo"
+51,4,4,Quasi tempo di Valse
+52,13,3,Vivace
+53,24,9,Allegretto grazioso
+54,7,3,Allegro
+55,3,9,Allegretto grazioso
+56,18,10,Poco Adagio
+56,18,10,Vivace
+57,18,4,"Moderato, quasi menuetto"
+58,8,3,Allegro vivace
+59,4,4,"Grazioso e lento, ma non troppo, quasi tempo di Valse"
+60,9,5,Allegro con brio
+61,5,3,Adagio
+62,21,9,Allegretto grazioso
+62,21,9,Molto vivace
+63,9,3,Allegro ma non troppo
+64,24,10,Adagio
+64,24,10,Allegro molto
+65,3,5,Largo
+66,24,4,Molto vivace
+67,12,5,Allegro con fuoco
+68,21,3,Allegro molto
+69,22,3,Allegro non assai
+70,7,3,Allegretto
+71,19,3,Poco sostenuto
+72,26,3,Allegro
+73,3,3,Vivace
+74,7,3,Allegretto
+75,23,3,Presto
+76,24,3,Allegro non troppo
+77,12,3,Presto
+78,22,3,Poco andante
+79,22,3,Presto
+80,10,3,Andantino grazioso
+81,22,3,Un poco andante
+82,18,3,Allegretto grazioso
+83,19,3,Con moto
+84,26,3,Andantino
+85,10,3,Molto vivace
+86,25,3,Allegretto
+87,24,3,Poco allegretto
+88,24,3,Vivace
