@@ -12,7 +12,6 @@ CREATE TABLE `composer` (
     PRIMARY KEY (comp_id)
 );
 
-
 CREATE TABLE `era` (
     era_id int(11) NOT NULL AUTO_INCREMENT,
     era_name varchar(100) NOT NULL,
@@ -22,14 +21,12 @@ CREATE TABLE `era` (
     PRIMARY KEY (era_id)
 );
 
-
 CREATE TABLE `composer_era` (
     comp_id int(11) NOT NULL,
     era_id int(11) NOT NULL,
     FOREIGN KEY (comp_id) REFERENCES composer(comp_id),
     FOREIGN KEY (era_id) REFERENCES era(era_id)
 );
-
 
 CREATE TABLE `work` (
     work_id int(11) NOT NULL AUTO_INCREMENT,
@@ -59,7 +56,6 @@ CREATE TABLE `work` (
     FOREIGN KEY (era_id) REFERENCES `era`(era_id)
 );
 
-
 CREATE TABLE `key` (
     key_id int(11) NOT NULL AUTO_INCREMENT,
     key_name varchar(20) NOT NULL,
@@ -72,7 +68,6 @@ CREATE TABLE `key` (
     FOREIGN KEY (key_enharmonic) REFERENCES `key`(key_id)
 );
 
-
 CREATE TABLE `work_key` (
     work_id int(11) NOT NULL,
     key_id int(11) NOT NULL,
@@ -80,7 +75,6 @@ CREATE TABLE `work_key` (
     FOREIGN KEY (work_id) REFERENCES `work`(work_id),
     FOREIGN KEY (key_id) REFERENCES `key`(key_id)
 );
-
 
 CREATE TABLE `time` (
     time_id int(11) NOT NULL AUTO_INCREMENT,
@@ -91,7 +85,6 @@ CREATE TABLE `time` (
     PRIMARY KEY (time_id)
 );
 
-
 CREATE TABLE `work_time` (
     work_id int(11) NOT NULL,
     time_id int(11) NOT NULL,
@@ -99,7 +92,6 @@ CREATE TABLE `work_time` (
     FOREIGN KEY (work_id) REFERENCES `work`(work_id),
     FOREIGN KEY (time_id) REFERENCES `time`(time_id)
 );
-
 
 CREATE TABLE `tempo` (
     tempo_id int(11) NOT NULL AUTO_INCREMENT,
@@ -109,7 +101,6 @@ CREATE TABLE `tempo` (
     PRIMARY KEY (tempo_id)
 );
 
-
 CREATE TABLE `work_tempo` (
     work_id int(11) NOT NULL,
     tempo_id int(11) NOT NULL,
@@ -117,7 +108,6 @@ CREATE TABLE `work_tempo` (
     FOREIGN KEY (work_id) REFERENCES `work`(work_id),
     FOREIGN KEY (tempo_id) REFERENCES `tempo`(tempo_id)
 );
-
 
 CREATE TABLE `instrument` (
     instr_id int(11) NOT NULL AUTO_INCREMENT,
@@ -128,7 +118,6 @@ CREATE TABLE `instrument` (
     PRIMARY KEY (instr_id)
 );
 
-
 CREATE TABLE `work_instrument`(
     work_id int(11) NOT NULL,
     instr_id int(11) NOT NULL,
@@ -136,7 +125,6 @@ CREATE TABLE `work_instrument`(
     FOREIGN KEY (work_id) REFERENCES `work`(work_id),
     FOREIGN KEY (instr_id) REFERENCES `instrument`(instr_id)
 );
-
 
 CREATE TABLE `pattern` (
     pat_id int(11) NOT NULL AUTO_INCREMENT,
@@ -146,7 +134,6 @@ CREATE TABLE `pattern` (
     PRIMARY KEY (pat_id),
     FOREIGN KEY (pat_relatedto) REFERENCES `pattern`(pat_id)
 );
-
 
 CREATE TABLE `work_pattern` (
     work_id int(11) NOT NULL,

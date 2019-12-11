@@ -1,14 +1,16 @@
 work_id,tempo_name
 1,Allegro
 2,Adagio di molto
-3,"Allegretto, Trio"
+3,Allegretto
+3,Trio
 4,Allegro animato
 5,Allegro con moto
 6,Poco adagio
 7,Allegro con brio
 8,Allegro con fuoco
 9,Allegro moderato
-10,"Adagio molto, tempo di marcia"
+10,Adagio molto
+10,tempo di marcia
 11,Allegro vivace
 12,Allegro
 13,Andante sostenuto e molto cantabile
@@ -19,7 +21,8 @@ work_id,tempo_name
 18,Allegro scherzando
 19,Allegro molto
 20,Presto
-21,"Allegretto scherzando,Allegro vivo"
+21,Allegretto scherzando
+21,Allegro vivo
 22,Poco Allegro
 23,Tempo di menuetto
 24,Allegro vivace
@@ -27,7 +30,8 @@ work_id,tempo_name
 26,Allegro assai
 27,Presto
 28,Presto
-29,"Allegretto scherzando,Allegro vivo"
+29,Allegretto scherzando
+29,Allegro vivo
 30,Poco Allegro
 31,Tempo di menuetto
 32,Allegro vivace
@@ -46,7 +50,8 @@ work_id,tempo_name
 45,Allegretto grazioso
 46,Allegro
 47,Allegretto grazioso
-48,"Poco Adagio,Vivace"
+48,Poco Adagio
+48,Vivace
 49,"Moderato, quasi menuetto"
 50,Allegro vivace
 51,"Grazioso e lento, ma non troppo, quasi tempo di Valse"
@@ -54,15 +59,18 @@ work_id,tempo_name
 53,Allegretto grazioso
 54,Allegro
 55,Allegretto grazioso
-56,"Poco Adagio, Vivace"
+56,Poco Adagio
+56,Vivace
 57,"Moderato, quasi menuetto"
 58,Allegro vivace
 59,"Grazioso e lento, ma non troppo, quasi tempo di Valse"
 60,Allegro con brio
 61,Adagio
-62,"Allegretto grazioso, molto vivace"
+62,Allegretto grazioso
+62,molto vivace
 63,Allegro ma non troppo
-64,"Adagio, Allegro molto"
+64,Adagio
+64,Allegro molto
 65,Largo
 66,Molto vivace
 67,Allegro con fuoco

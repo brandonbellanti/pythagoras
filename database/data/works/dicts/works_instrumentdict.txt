@@ -1,4 +1,4 @@
-'Flute':1,
+'flute':1,
 'Piccolo':2,
 'Alto flute':3,
 'Oboe':4,
