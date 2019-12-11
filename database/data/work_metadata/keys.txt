@@ -1,31 +1,31 @@
-key_id	key_name	key_relative	key_accidentals	key_accidentaltype	key_enharmonic
-1	Cb major	16	7	flat	13
-2	Gb major	17	6	flat	14
-3	Db major	18	5	flat	15
-4	Ab major	19	4	flat	
-5	Eb major	20	3	flat	
-6	Bb major	21	2	flat	
-7	F major	22	1	flat	
-8	C major	23	0		
-9	G major	24	1	sharp	
-10	D major	25	2	sharp	
-11	A major	26	3	sharp	
-12	E major	27	4	sharp	
-13	B major	28	5	sharp	1
-14	F# major	29	6	sharp	2
-15	C# major	30	7	sharp	3
-16	Ab minor	1	7	flat	28
-17	Eb minor	2	6	flat	29
-18	Bb minor	3	5	flat	30
-19	F minor	4	4	flat	
-20	C minor	5	3	flat	
-21	G minor	6	2	flat	
-22	D minor	7	1	flat	
-23	A minor	8	0		
-24	E minor	9	1	sharp	
-25	B minor	10	2	sharp	
-26	F# minor	11	3	sharp	
-27	C# minor	12	4	sharp	
-28	G# minor	13	5	sharp	16
-29	D# minor	14	6	sharp	17
-30	A# minor	15	7	sharp	18
+(key_id,key_name,key_relative,key_accidentals,key_accidentaltype,key_enharmonic),
+(1,"Cb major",16,7,"flat",13),
+(2,"Gb major",17,6,"flat",14),
+(3,"Db major",18,5,"flat",15),
+(4,"Ab major",19,4,"flat",),
+(5,"Eb major",20,3,"flat",),
+(6,"Bb major",21,2,"flat",),
+(7,"F major",22,1,"flat",),
+(8,"C major",23,0,,),
+(9,"G major",24,1,"sharp",),
+(10,"D major",25,2,"sharp",),
+(11,"A major",26,3,"sharp",),
+(12,"E major",27,4,"sharp",),
+(13,"B major",28,5,"sharp",1),
+(14,"F# major",29,6,"sharp",2),
+(15,"C# major",30,7,"sharp",3),
+(16,"Ab minor",1,7,"flat",28),
+(17,"Eb minor",2,6,"flat",29),
+(18,"Bb minor",3,5,"flat",30),
+(19,"F minor",4,4,"flat",),
+(20,"C minor",5,3,"flat",),
+(21,"G minor",6,2,"flat",),
+(22,"D minor",7,1,"flat",),
+(23,"A minor",8,0,,),
+(24,"E minor",9,1,"sharp",),
+(25,"B minor",10,2,"sharp",),
+(26,"F# minor",11,3,"sharp",),
+(27,"C# minor",12,4,"sharp",),
+(28,"G# minor",13,5,"sharp",16),
+(29,"D# minor",14,6,"sharp",17),
+(30,"A# minor",15,7,"sharp",18)

@@ -61,7 +61,7 @@ CREATE TABLE `key` (
     key_name varchar(20) NOT NULL,
     key_relative int(11) NOT NULL,
     key_accnum int(1) NOT NULL,
-    key_acctype enum('flats','sharps'),
+    key_acctype enum('flat','sharp'),
     key_enharmonic int(11),
     PRIMARY KEY (key_id),
     FOREIGN KEY (key_relative) REFERENCES `key`(key_id),
@@ -81,7 +81,7 @@ CREATE TABLE `time` (
     time_name varchar(20) NOT NULL,
     time_numbeats varchar(20),
     time_beatval enum ('whole','half','quarter','eighth','sixteenth'),
-    time_type enum ('simple','complex'),
+    time_type enum ('simple','complex','compound'),
     PRIMARY KEY (time_id)
 );
 
