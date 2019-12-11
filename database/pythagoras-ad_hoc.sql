@@ -10,4 +10,4 @@ SHOW TABLES;
 
 TRUNCATE TABLE composer;
 
-SELECT * FROM composer WHERE comp_lname LIKE "%brahms%";
+SELECT * FROM composer WHERE comp_lname LIKE "%bach%";
