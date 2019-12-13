@@ -17,9 +17,9 @@ between works by the same composer, and between works from different composers. 
 For examples of the final version, see:</p>
 <br>
 <ul>
-    <li><a href="JSB_BWV1047_1.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, I. Allegro</a></li>
-    <li><a href="JSB_BWV1047_2.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, II. Andante</a></li>
-    <li><a href="JSB_BWV1047_3.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, III. Allegro assai</a></li>
+    <li><a href="89.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, I. Allegro</a></li>
+    <li><a href="90.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, II. Andante</a></li>
+    <li><a href="91.php">J.S. Bach - Brandenburg Concerto No. 2 in F Major, BWV 1047, III. Allegro assai</a></li>
 </ul>
 <br>
 <br>

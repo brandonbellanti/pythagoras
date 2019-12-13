@@ -1,3 +1,4 @@
+SET foreign_key_checks=0;
 INSERT INTO `work` (work_id,work_title,work_alttitle,work_opus,work_identifier,work_mvtitle,work_mvnumber,work_yearbegun,work_yearcompleted,work_yearpublished,work_yearpremiered,work_relatedto,work_measures,work_genre,work_form,work_note,work_wiki,work_imslp,work_viaf,comp_id,era_id) VALUES
     (1,"Symphony No. 1 in C minor ""The Bells of Zlonice""","Symfonie č. 1 c moll „Zlonické zvony“","Op. 3","B. 9","I. Maestoso — allegro",1,1865,1865,1961,1936,NULL,NULL,"Orchestral",NULL,NULL,"https://en.wikipedia.org/wiki/Symphony_No._1_(Dvo%C5%99%C3%A1k)","https://imslp.org/wiki/Symphony_No.1,_B.9_(Dvo%C5%99%C3%A1k,_Anton%C3%ADn)",NULL,177,10),
     (2,"Symphony No. 1 in C minor ""The Bells of Zlonice""","Symfonie č. 1 c moll „Zlonické zvony“","Op. 3","B. 9","II. Adagio di molto",2,1865,1865,1961,1936,NULL,NULL,"Orchestral",NULL,NULL,"https://en.wikipedia.org/wiki/Symphony_No._1_(Dvo%C5%99%C3%A1k)","https://imslp.org/wiki/Symphony_No.1,_B.9_(Dvo%C5%99%C3%A1k,_Anton%C3%ADn)",NULL,177,10),
@@ -92,38 +93,39 @@ INSERT INTO `work` (work_id,work_title,work_alttitle,work_opus,work_identifier,w
     (91,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1049",NULL,"III. Allegro assai",3,1718,1721,1851,NULL,NULL,139,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7)
 ;
 
-INSERT INTO `key` (key_id,key_name,key_relative,key_accidentals,key_accidentaltype,key_enharmonic) VALUES
+INSERT INTO `key` (key_id,key_name,key_relative,key_accnum,key_acctype,key_enharmonic) VALUES
     (1,"Cb major",16,7,"flat",13),
     (2,"Gb major",17,6,"flat",14),
     (3,"Db major",18,5,"flat",15),
-    (4,"Ab major",19,4,"flat",),
-    (5,"Eb major",20,3,"flat",),
-    (6,"Bb major",21,2,"flat",),
-    (7,"F major",22,1,"flat",),
-    (8,"C major",23,0,,),
-    (9,"G major",24,1,"sharp",),
-    (10,"D major",25,2,"sharp",),
-    (11,"A major",26,3,"sharp",),
-    (12,"E major",27,4,"sharp",),
+    (4,"Ab major",19,4,"flat",NULL),
+    (5,"Eb major",20,3,"flat",NULL),
+    (6,"Bb major",21,2,"flat",NULL),
+    (7,"F major",22,1,"flat",NULL),
+    (8,"C major",23,0,NULL,NULL),
+    (9,"G major",24,1,"sharp",NULL),
+    (10,"D major",25,2,"sharp",NULL),
+    (11,"A major",26,3,"sharp",NULL),
+    (12,"E major",27,4,"sharp",NULL),
     (13,"B major",28,5,"sharp",1),
     (14,"F# major",29,6,"sharp",2),
     (15,"C# major",30,7,"sharp",3),
     (16,"Ab minor",1,7,"flat",28),
     (17,"Eb minor",2,6,"flat",29),
     (18,"Bb minor",3,5,"flat",30),
-    (19,"F minor",4,4,"flat",),
-    (20,"C minor",5,3,"flat",),
-    (21,"G minor",6,2,"flat",),
-    (22,"D minor",7,1,"flat",),
-    (23,"A minor",8,0,,),
-    (24,"E minor",9,1,"sharp",),
-    (25,"B minor",10,2,"sharp",),
-    (26,"F# minor",11,3,"sharp",),
-    (27,"C# minor",12,4,"sharp",),
+    (19,"F minor",4,4,"flat",NULL),
+    (20,"C minor",5,3,"flat",NULL),
+    (21,"G minor",6,2,"flat",NULL),
+    (22,"D minor",7,1,"flat",NULL),
+    (23,"A minor",8,0,NULL,NULL),
+    (24,"E minor",9,1,"sharp",NULL),
+    (25,"B minor",10,2,"sharp",NULL),
+    (26,"F# minor",11,3,"sharp",NULL),
+    (27,"C# minor",12,4,"sharp",NULL),
     (28,"G# minor",13,5,"sharp",16),
     (29,"D# minor",14,6,"sharp",17),
     (30,"A# minor",15,7,"sharp",18)
 ;
+
 
 INSERT INTO `work_key` (work_id,key_id) VALUES
     (1,20),
@@ -1577,7 +1579,7 @@ INSERT INTO `work_tempo` (work_id,tempo_id) VALUES
     (88,55),
     (89,9),
     (90,27),
-    (91,11),
+    (91,11)
 ;
 
 INSERT INTO `time` (time_id,time_name,time_numbeats,time_beatval,time_type) VALUES
@@ -1690,3 +1692,5 @@ INSERT INTO `work_time` (work_id,time_id) VALUES
     (90,4),
     (91,3)
 ;
+
+SET foreign_key_checks=1;

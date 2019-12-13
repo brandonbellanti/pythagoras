@@ -11,9 +11,9 @@
 </div><!-- end welcome -->
 
 <div id="index-form">
-  <form action="search-results.php" method="post">
+  <form action="adv-search-results.php" method="post">
   <!-- <input class="no-outline" type="text" id="composer_work" name="composer_work" placeholder="composer name or work title"/> -->
-  <input class="no-outline" type="text" id="composer_work" name="composer_work" placeholder="composer name"/>
+  <input class="no-outline" type="text" id="composer_work" name="comp_name" placeholder="composer name"/>
   <input class="regular scale" type="submit" value="see analysis">
   </form>
 </div><!-- end index-form -->

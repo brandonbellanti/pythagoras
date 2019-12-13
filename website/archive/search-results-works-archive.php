@@ -34,41 +34,57 @@ echo "<br>";
 
 // start query string
 $query = "SELECT
-  concat(comp_fname,' ',comp_mname,' ',comp_lname) AS 'name',
-  concat(comp_birthyear,'-',comp_deathyear) AS 'years',
-  comp_nationality AS 'nationality',
-  group_concat(era_name separator ', ') AS 'era'
+  wv_id,
+  wv_title,
+  wv_composer,
+  wv_completed,
+  wv_era,
+  wv_keys,
+  wv_times,
+  wv_tempos,
+  wv_instruments,
+  wv_wiki,
+  wv_imslp
 FROM
-  (composer AS C JOIN composer_era AS CE ON C.comp_id = CE.comp_id)
-JOIN era AS E ON CE.era_id = E.era_id ";
+  work_view AS wv ";
 
 // add to query string based on user inputs
 // if ($input) {
 //   $query = $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' ";
 // }
-$query = ($input) ? $query."WHERE concat(comp_fname,' ',comp_mname,' ',comp_lname) LIKE '%{$input}%' " :$query;
+$query = ($input) ? $query."WHERE wv_title LIKE '%{$input}%';" :$query;
 
 // add sortby and close query
-$query = $query."ORDER BY comp_birthyear;";
+// $query = $query."GROUP BY C.comp_id ORDER BY comp_birthyear;";
 
 
 $result = mysqli_query($con,$query);
 
 echo "<table class='results-table'>
 <tr>
-<th>Name</th>
-<th>Years</th>
-<th>Nationality</th>
+<th>Title</th>
+<th>Composer</th>
+<th>Year</th>
 <th>Era</th>
+<th>Key/s</th>
+<th>Time/s</th>
+<th>Tempo/s</th>
+<th>Instruments</th>
+<th>Wiki</th>
 </tr>";
 
 while($row = mysqli_fetch_array($result))
   {
   echo "<tr>";
-  echo "<td>" . $row['name'] . "</td>";
-  echo "<td>" . $row['years'] . "</td>";
-  echo "<td>" . $row['nationality'] . "</td>";
-  echo "<td>" . $row['era'] . "</td>";
+  echo "<td><a href='" . $row['wv_id'] . "'>" . $row['wv_title'] . "</a></td>";
+  echo "<td>" . $row['wv_composer'] . "</td>";
+  echo "<td>" . $row['wv_completed'] . "</td>";
+  echo "<td>" . $row['wv_era'] . "</td>";
+  echo "<td>" . $row['wv_keys'] . "</td>";
+  echo "<td>" . $row['wv_times'] . "</td>";
+  echo "<td>" . $row['wv_tempos'] . "</td>";
+  echo "<td>" . $row['wv_instruments'] . "</td>";
+  echo "<td><a href='" . $row['wv_wiki'] . "'>Go</td>";
   echo "</tr>";
   }
 echo "</table>";

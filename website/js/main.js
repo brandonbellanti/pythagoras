@@ -12,7 +12,7 @@ function myFunction() {
 function composerSearch() {
   document.getElementById("composer-search-button").style.textDecoration = "underline";
   document.getElementById("work-search-button").style.textDecoration = "none";
-  document.getElementById("all-search-button").style.textDecoration = "none";
+  // document.getElementById("all-search-button").style.textDecoration = "none";
   var x = document.getElementById("composer-search");
     x.style.display = "block";
   var y = document.getElementById("work-search");
@@ -22,19 +22,19 @@ function composerSearch() {
 function workSearch() {
   document.getElementById("composer-search-button").style.textDecoration = "none";
   document.getElementById("work-search-button").style.textDecoration = "underline";
-  document.getElementById("all-search-button").style.textDecoration = "none";
+  // document.getElementById("all-search-button").style.textDecoration = "none";
   var x = document.getElementById("composer-search");
     x.style.display = "none";
   var y = document.getElementById("work-search");
     y.style.display = "block";
 }
 
-function allSearch() {
-  document.getElementById("composer-search-button").style.textDecoration = "none";
-  document.getElementById("work-search-button").style.textDecoration = "none";
-  document.getElementById("all-search-button").style.textDecoration = "underline";
-  var x = document.getElementById("composer-search");
-    x.style.display = "block";
-  var y = document.getElementById("work-search");
-    y.style.display = "block";
-}
+// function allSearch() {
+//   document.getElementById("composer-search-button").style.textDecoration = "none";
+//   document.getElementById("work-search-button").style.textDecoration = "none";
+//   document.getElementById("all-search-button").style.textDecoration = "underline";
+//   var x = document.getElementById("composer-search");
+//     x.style.display = "block";
+//   var y = document.getElementById("work-search");
+//     y.style.display = "block";
+// }
