@@ -566,3 +566,21 @@ INSERT INTO `composer_era` (comp_id,era_id) VALUES
     (237,18),
     (238,18)
 ;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Anton%C3%ADn_Dvo%C5%99%C3%A1k",
+	comp_imslp = "https://imslp.org/wiki/Category:Dvo%C5%99%C3%A1k,_Anton%C3%ADn"
+WHERE comp_id = 177;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach",
+	comp_imslp = "https://imslp.org/wiki/Category:Bach,_Johann_Sebastian"
+WHERE comp_id = 38;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Johannes_Brahms",
+	comp_imslp = "https://imslp.org/wiki/Category:Brahms,_Johannes"
+WHERE comp_id = 170;

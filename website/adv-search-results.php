@@ -10,17 +10,17 @@
 <!-- <h2>Search results</h2> -->
 <?php
 
-// get the page uri
+// get the page uri -- "/adv-search-results.php?comp=38&work=91"
 $uri = $_SERVER['REQUEST_URI'];
 
-// split the uri and take the parameters after the filepath
+// split the uri and take the parameters after the filepath -- "comp=38&work=91"
 $params = explode('?',$uri)[1];
 
-// match for both composer id and work id
+// match for both composer id and work id -- "comp=38" and "work=91"
 preg_match('/(comp=\d+)/', $params, $comp_id);
 preg_match('/(work=\d+)/', $params, $work_id);
 
-// split matches on '=' to get just the number and convert to int
+// split matches on '=' to get just the number and convert to int -- `38` and `91`
 $comp_id = (int)explode('=',$comp_id[0])[1];
 $work_id = (int)explode('=',$work_id[0])[1];
 
@@ -37,15 +37,6 @@ $con->set_charset("utf8");
 $terms = FALSE;
 
 
-
-
-
-
-
-
-
-
-
 // create variables from form inputs
 $name = $_POST['comp_name'];
 $afteryear = $_POST['comp_bornafter'];
@@ -58,9 +49,6 @@ $era = $_POST['comp_era'];
 if ($comp_id||$name||$afteryear||$beforeyear||$work_composer||$nationality||$era)
 {
   $terms = TRUE;
-
-  // give user feedback for entered search terms
-  // if ($input) {echo "Your search input: \"{$input}\"<br>";}
 
 
   // replace spaces in title with '%' for SQL LIKE statements
@@ -78,7 +66,6 @@ if ($comp_id||$name||$afteryear||$beforeyear||$work_composer||$nationality||$era
     cv_era,
     cv_wiki
   FROM composer_view AS cv
-  -- JOIN work_view AS wv ON `cv`.cv_id = `wv`.cv_id
   WHERE 1=1 ";
 
   // add to query string based on user inputs
@@ -89,15 +76,13 @@ if ($comp_id||$name||$afteryear||$beforeyear||$work_composer||$nationality||$era
   $comp_query = ($nationality) ? $comp_query."AND cv_nationality LIKE '%{$nationality}%' " :$comp_query;
   $comp_query = ($era) ? $comp_query."AND cv_era LIKE '%{$era}%' " :$comp_query;
 
-  // add sortby and close query
-  // $comp_query = $comp_query."GROUP BY `cv`.cv_id ORDER BY cv_surname;";
   $comp_query = $comp_query."ORDER BY cv_surname;";
 
 
   $comp_result = mysqli_query($con,$comp_query);
 
   echo "
-  <h2>composers</h2>
+  <h2>composers</h2><br>
   <table class='results-table'>
   <tr>
   <th>Name</th>
@@ -262,7 +247,7 @@ if ($comp_id||$work_id||$work_title||$work_identifier||$work_composer||$work_aft
       echo $wikirow;
       echo "</tr>";
       }
-    echo "</table></div>";
+    echo "</table></div><br><br>";
   };
 
 

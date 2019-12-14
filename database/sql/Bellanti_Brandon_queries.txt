@@ -1,3 +1,819 @@
+-- CREATE TABLE STATEMENTS --
+
+CREATE TABLE `composer` (
+    comp_id int(11) NOT NULL AUTO_INCREMENT,
+    comp_fname varchar(100),
+    comp_mname varchar(100),
+    comp_lname varchar(100) NOT NULL,
+    comp_birthyear smallint(4),
+    comp_deathyear smallint(4),
+    comp_nationality varchar(100),
+    comp_wiki varchar(255),
+    comp_imslp varchar(255),
+    comp_viaf varchar(255),
+    PRIMARY KEY (comp_id)
+);
+
+CREATE TABLE `era` (
+    era_id int(11) NOT NULL AUTO_INCREMENT,
+    era_name varchar(100) NOT NULL,
+    era_start smallint(4),
+    era_end smallint(4),
+    era_period varchar(100),
+    PRIMARY KEY (era_id)
+);
+
+CREATE TABLE `composer_era` (
+    comp_id int(11) NOT NULL,
+    era_id int(11) NOT NULL,
+    FOREIGN KEY (comp_id) REFERENCES composer(comp_id),
+    FOREIGN KEY (era_id) REFERENCES era(era_id)
+);
+
+CREATE TABLE `work` (
+    work_id int(11) NOT NULL AUTO_INCREMENT,
+    work_title varchar(255) NOT NULL,
+    work_alttitle varchar(255),
+    work_opus varchar(20),
+    work_identifier varchar(20),
+    work_mvtitle varchar(255),
+    work_mvnumber int(2),
+    work_yearbegun smallint(4),
+    work_yearcompleted smallint(4),
+    work_yearpublished smallint(4),
+    work_yearpremiered smallint(4),
+    work_relatedto int(11),
+    work_measures int(6),
+    work_genre varchar(50),
+    work_form varchar(50),
+    work_note text,
+    work_wiki varchar(255),
+    work_imslp varchar(255),
+    work_viaf varchar(255),
+    comp_id int(11),
+    era_id int(11),
+    PRIMARY KEY (work_id),
+    FOREIGN KEY (work_relatedto) REFERENCES `work`(work_id),
+    FOREIGN KEY (comp_id) REFERENCES `composer`(comp_id),
+    FOREIGN KEY (era_id) REFERENCES `era`(era_id)
+);
+
+CREATE TABLE `key` (
+    key_id int(11) NOT NULL AUTO_INCREMENT,
+    key_name varchar(20) NOT NULL,
+    key_relative int(11) NOT NULL,
+    key_accnum int(1) NOT NULL,
+    key_acctype enum('flat','sharp'),
+    key_enharmonic int(11),
+    PRIMARY KEY (key_id),
+    FOREIGN KEY (key_relative) REFERENCES `key`(key_id),
+    FOREIGN KEY (key_enharmonic) REFERENCES `key`(key_id)
+);
+
+CREATE TABLE `work_key` (
+    work_id int(11) NOT NULL,
+    key_id int(11) NOT NULL,
+    key_startmeasure int(6),
+    FOREIGN KEY (work_id) REFERENCES `work`(work_id),
+    FOREIGN KEY (key_id) REFERENCES `key`(key_id)
+);
+
+CREATE TABLE `time` (
+    time_id int(11) NOT NULL AUTO_INCREMENT,
+    time_name varchar(20) NOT NULL,
+    time_numbeats varchar(20),
+    time_beatval enum ('whole','half','quarter','eighth','sixteenth'),
+    time_type enum ('simple','complex','compound'),
+    PRIMARY KEY (time_id)
+);
+
+CREATE TABLE `work_time` (
+    work_id int(11) NOT NULL,
+    time_id int(11) NOT NULL,
+    time_startmeasure int(6),
+    FOREIGN KEY (work_id) REFERENCES `work`(work_id),
+    FOREIGN KEY (time_id) REFERENCES `time`(time_id)
+);
+
+CREATE TABLE `tempo` (
+    tempo_id int(11) NOT NULL AUTO_INCREMENT,
+    tempo_marking varchar(255) NOT NULL,
+    tempo_rangestart int(3),
+    tempo_rangeend int(3),
+    PRIMARY KEY (tempo_id)
+);
+
+CREATE TABLE `work_tempo` (
+    work_id int(11) NOT NULL,
+    tempo_id int(11) NOT NULL,
+    tempo_startmeasure int(6),
+    FOREIGN KEY (work_id) REFERENCES `work`(work_id),
+    FOREIGN KEY (tempo_id) REFERENCES `tempo`(tempo_id)
+);
+
+CREATE TABLE `instrument` (
+    instr_id int(11) NOT NULL AUTO_INCREMENT,
+    instr_name varchar(100) NOT NULL,
+    instr_altname varchar(100),
+    instr_tuning varchar(10),
+    instr_family enum('Woodwind','Brass','String','Percussion','Keyboard'),
+    PRIMARY KEY (instr_id)
+);
+
+CREATE TABLE `work_instrument`(
+    work_id int(11) NOT NULL,
+    instr_id int(11) NOT NULL,
+    part_num int(2),
+    FOREIGN KEY (work_id) REFERENCES `work`(work_id),
+    FOREIGN KEY (instr_id) REFERENCES `instrument`(instr_id)
+);
+
+CREATE TABLE `pattern` (
+    pat_id int(11) NOT NULL AUTO_INCREMENT,
+    pat_data json,
+    pat_type varchar(50),
+    pat_relatedto int(11),
+    PRIMARY KEY (pat_id),
+    FOREIGN KEY (pat_relatedto) REFERENCES `pattern`(pat_id)
+);
+
+CREATE TABLE `work_pattern` (
+    work_id int(11) NOT NULL,
+    pat_id int(11) NOT NULL,
+    pat_startmeasure int(6),
+    FOREIGN KEY (work_id) REFERENCES `work`(work_id),
+    FOREIGN KEY (pat_id) REFERENCES `pattern`(pat_id)
+);
+
+CREATE VIEW `composer_view` AS
+SELECT
+	C.comp_id AS `cv_id`,
+    CONCAT_WS(' ',comp_fname,comp_mname,comp_lname) AS `cv_name`,
+    comp_lname AS `cv_surname`,
+    comp_birthyear AS `cv_born`,
+	comp_deathyear AS `cv_died`,
+    comp_nationality AS `cv_nationality`,
+    GROUP_CONCAT(DISTINCT era_name SEPARATOR ', ') AS `cv_era`,
+    comp_wiki AS `cv_wiki`,
+    comp_imslp AS `cv_imslp`
+FROM (`composer` AS C JOIN `composer_era` AS CE ON C.comp_id = CE.comp_id)
+JOIN `era` AS E ON CE.era_id = E.era_id
+GROUP BY C.comp_id
+;
+
+
+
+
+
+
+
+
+
+
+-- CREATE VIEW STATEMENTS --
+
+CREATE VIEW `work_view` AS
+SELECT
+	w.work_id AS `wv_id`,
+    CONCAT_WS(', ',work_title,work_opus,work_identifier,work_mvtitle) AS `wv_title`,
+    work_identifier AS `wv_identifier`,
+    cv.cv_name AS `wv_composer`,
+    cv_id AS `cv_id`,
+    work_yearcompleted AS `wv_completed`,
+    era_name AS `wv_era`,
+    GROUP_CONCAT(DISTINCT key_name SEPARATOR ', ') AS `wv_keys`,
+	GROUP_CONCAT(DISTINCT time_name SEPARATOR ', ') AS `wv_times`,
+	GROUP_CONCAT(DISTINCT tempo_marking SEPARATOR ', ') AS `wv_tempos`,
+	GROUP_CONCAT(DISTINCT instr_name SEPARATOR ', ') AS `wv_instruments`,
+    work_wiki AS `wv_wiki`,
+    work_imslp AS `wv_imslp`
+FROM
+	`work` w,
+    `era` e,
+    `tempo` tp,
+    `work_tempo` wtp,
+    `time` tm,
+    `work_time` wtm,
+    `key` k,
+    `work_key` wk,
+    `instrument` i,
+    `work_instrument` wi,
+    `composer_view` cv
+WHERE
+	w.comp_id = cv.cv_id AND
+    w.era_id = e.era_id AND
+    w.work_id = wtp.work_id AND
+    wtp.tempo_id = tp.tempo_id AND
+    w.work_id = wtm.work_id AND
+    wtm.time_id = tm.time_id AND
+    w.work_id = wk.work_id AND
+    wk.key_id = k.key_id AND
+    w.work_id = wi.work_id AND
+    wi.instr_id = i.instr_id
+GROUP BY w.work_id
+;
+
+
+
+
+
+
+
+
+
+
+-- INSERT VALUES AND UPDATE STATEMENTS -- 
+
+INSERT INTO `composer` (comp_fname,comp_mname,comp_lname,comp_birthyear,comp_deathyear,comp_nationality) VALUES
+    ("Jiří","","Rychnovský",1529,1616,"Czech"),
+    ("William","","Byrd",1540,1623,"English"),
+    ("Claudio","Giovanni Antonio","Monteverdi",1567,1643,"Italian"),
+    ("Giovanni","","Valentini",1582,1649,"Italian"),
+    ("Heinrich","","Schütz",1585,1672,"German"),
+    ("Jacob","","van Eyck",1590,1657,"Dutch"),
+    ("Giacomo","","Carissimi",1605,1674,"Italian"),
+    ("Dieterich","","Buxtehude",1637,1707,"Danish-German"),
+    ("Juan","García","de Salazar",1639,1710,"Spanish"),
+    ("Johann","Christoph","Bach",1642,1703,"German"),
+    ("Georg","Christoph","Bach",1642,1697,"German"),
+    ("Johann","Friedrich","Alberti",1642,1710,"German"),
+    ("Tomás","","de Torrejón y Velasco",1644,1728,"Spanish"),
+    ("Johann","Michael","Bach",1648,1694,"German"),
+    ("Johann","","Pachelbel",1653,1706,"German"),
+    ("Jean-Baptiste","","Moreau",1656,1733,"French"),
+    ("Alessandro","","Scarlatti",1660,1725,"Italian"),
+    ("Johann","Joseph","Fux",1660,1741,"German"),
+    ("Johann","","Kuhnau",1660,1722,"German"),
+    ("Élisabeth","Jacquet","de La Guerre",1665,1729,"French"),
+    ("Francesco","","Scarlatti",1666,1741,"Italian"),
+    ("François","","Couperin",1668,1733,"French"),
+    ("Johann","Nicolaus","Bach",1669,1753,"German"),
+    ("Antonio","","Caldara",1670,1736,"Italian"),
+    ("Johann","Christoph","Bach",1671,1721,"German"),
+    ("Tomaso","Giovanni","Albinoni",1671,1751,"Italian"),
+    ("Jeremiah","","Clarke",1674,1707,"English"),
+    ("Johann","Bernhard","Bach",1676,1749,"German"),
+    ("Johann","Ludwig","Bach",1677,1731,"German"),
+    ("Antonio","","Vivaldi",1678,1741,"Italian"),
+    ("Pietro","Filippo","Scarlatti",1679,1750,"Italian"),
+    ("Georg","Philipp","Telemann",1681,1767,"German"),
+    ("Jean-Joseph","","Mouret",1682,1738,"French"),
+    ("Christoph","","Graupner",1683,1760,"German"),
+    ("Jean-Philippe","","Rameau",1683,1764,"French"),
+    ("François","","d'Agincourt",1684,1758,"French"),
+    ("Bohuslav","Matěj","Černohorský",1684,1742,"Czech"),
+    ("Johann","Sebastian","Bach",1685,1750,"German"),
+    ("George","Frideric","Handel",1685,1759,"German"),
+    ("Wilhelm","Hieronymus","Pachelbel",1685,1764,"German"),
+    ("Domenico","","Scarlatti",1685,1757,"Italian"),
+    ("Giuseppe","Matteo","Alberti",1685,1751,"Italian"),
+    ("Nicola","","Porpora",1686,1768,"Italian"),
+    ("Francesco","","Geminiani",1687,1762,"Italian"),
+    ("Charles","Theodore","Pachelbel",1690,1750,"German"),
+    ("Louis-Claude","","Daquin",1694,1772,"French"),
+    ("Johan","Helmich","Roman",1694,1758,"Sweedish"),
+    ("Johann","Lorenz","Bach",1695,1773,"German"),
+    ("Jean-Marie","","Leclair",1697,1764,"French"),
+    ("František","","Jiránek",1698,1778,"Czech"),
+    ("Johann","Adolph","Hasse",1699,1783,"German"),
+    ("Johann","Bernhard","Bach",1700,1743,"German"),
+    ("Giovanni","Battista","Sammartini",1700,1775,"Italian"),
+    ("František","","Tůma",1704,1774,"Czech"),
+    ("Václav","Jan","Kopřiva",1708,1789,"Bohemian"),
+    ("Franz","Xaver","Richter",1709,1789,"Austro-Moravian"),
+    ("Wilhelm","Friedemann","Bach",1710,1784,"German"),
+    ("Domenico","","Alberti",1710,1740,"Italian"),
+    ("William","","Boyce",1711,1779,"English"),
+    ("Jean-Jacques","","Rousseau",1712,1778,"French"),
+    ("Carl","Philipp Emanuel","Bach",1714,1788,"German"),
+    ("Christoph","Willibald","Gluck",1714,1787,"Bohemian"),
+    ("Leopold","","Mozart",1719,1787,"German"),
+    ("Armand-Louis","","Couperin",1727,1789,"French"),
+    ("Niccolò","","Piccinni",1728,1800,"Italian"),
+    ("František","Xaver","Pokorný",1729,1794,"Czech"),
+    ("Antonio","","Soler",1729,1783,"Spanish"),
+    ("František","Xaver","Dušek",1731,1799,"Czech"),
+    ("Johann","Christoph Friedrich","Bach",1732,1795,"German"),
+    ("František","Xaver","Brixi",1732,1771,"Czech"),
+    ("Thomas","","Erskine",1732,1781,"Scottish"),
+    ("Joseph","","Haydn",1732,1809,"Austrian"),
+    ("Johann","Christian","Bach",1735,1782,"German"),
+    ("Michael","","Haydn",1737,1806,"Austrian"),
+    ("Josef","","Mysliveček",1737,1781,"Czech"),
+    ("Élisabeth","","de Haulteterre",1737,1768,"French"),
+    ("Giovanni","","Paisiello",1740,1816,"Italian"),
+    ("Carl","","Stamitz",1745,1801,"German-Czech"),
+    ("Leopold","","Kozeluch",1747,1818,"Czech"),
+    ("Domenico","","Cimarosa",1749,1801,"Italian"),
+    ("Marija","","Zubova",1749,1799,"Russion"),
+    ("Antonio","","Rosetti",1750,1792,"Italian"),
+    ("Antonio","","Salieri",1750,1825,"Italian"),
+    ("Maria","Anna","Mozart",1751,1829,"Austrian"),
+    ("Jan","Křtitel","Kuchař",1751,1829,"Czech"),
+    ("Muzio","","Clementi",1752,1832,"English"),
+    ("Josef","","Reicha",1752,1795,"Czech"),
+    ("Franz","Anton","Hoffmeister",1754,1812,"German"),
+    ("Wolfgang","Amadeus","Mozart",1756,1791,"Austrian"),
+    ("Ignaz","","Pleyel",1757,1831,"French"),
+    ("Wilhelm","Friedrich Ernst","Bach",1759,1845,"German"),
+    ("Franz","","Krommer",1759,1831,"Czech"),
+    ("Luigi","","Cherubini",1760,1842,"Italian"),
+    ("Johann","Ladislaus","Dussek",1760,1812,"Czech"),
+    ("Friedrich","Heinrich","Himmel",1765,1814,"German"),
+    ("Franz","Xaver","Süssmayr",1766,1803,"Austrian"),
+    ("Anton","","Reicha",1770,1836,"Czech-French"),
+    ("Ludwig","","van Beethoven",1770,1827,"German"),
+    ("Édouard","","Du Puy",1770,1822,"Swiss"),
+    ("Jan","August","Vitásek",1770,1839,"Bohemian"),
+    ("Johann","Baptist","Cramer",1771,1858,"English"),
+    ("Václav","","Tomášek",1774,1850,"Czech"),
+    ("Gaspare","","Spontini",1774,1851,"Italian"),
+    ("Johann","Nepomuk","Hummel",1778,1837,"Austrian"),
+    ("Fernando","","Sor",1778,1839,"Spanish"),
+    ("Anton","","Diabelli",1781,1858,"Austrian"),
+    ("Mauro","","Giuliani",1781,1829,"Italian"),
+    ("John","","Field",1782,1837,"Irish"),
+    ("Niccolò","","Paganini",1782,1840,"Italian"),
+    ("Daniel","","Auber",1782,1871,"French"),
+    ("Ferdinand","","Ries",1784,1838,"German"),
+    ("Louis","","Spohr",1784,1859,"German"),
+    ("George","","Onslow",1784,1853,"Anglo-French"),
+    ("Catherina","","Cibbini-Kozeluch",1785,1858,"Austrian-Bohemian"),
+    ("Friedrich","","Kuhlau",1786,1832,"Danish"),
+    ("Carl","Maria","von Weber",1786,1826,"German"),
+    ("Franz","Xaver","Gruber",1787,1863,"Austrian"),
+    ("Maria","Agata","Szymanowska",1789,1831,"Polish"),
+    ("Franz","Xaver Wolfgang","Mozart",1791,1844,"Austrian"),
+    ("Carl","","Czerny",1791,1857,"Czech"),
+    ("Giacomo","","Meyerbeer",1791,1864,"German"),
+    ("Jan","Václav","Voříšek",1791,1825,"Czech"),
+    ("Ferdinand","","Hérold",1791,1833,"French"),
+    ("Gioachino","","Rossini",1792,1868,"Italian"),
+    ("Ignaz","","Moscheles",1794,1870,"Bohemian"),
+    ("Ignaz","","Moscheles",1794,1870,"Czech"),
+    ("Heinrich","","Marschner",1795,1861,"German"),
+    ("Saverio","","Mercadante",1795,1870,"Italian"),
+    ("Giovanni","","Pacini",1796,1867,"Italian"),
+    ("Franz","","Berwald",1796,1868,"Swedish"),
+    ("Carl","","Loewe",1796,1869,"German"),
+    ("Gaetano","","Donizetti",1797,1848,"Italian"),
+    ("Franz","","Schubert",1797,1828,"Austrian"),
+    ("Fromental","","Halévy",1799,1862,"French"),
+    ("Vincenzo","","Bellini",1801,1835,"Italian"),
+    ("Amédée","","Méreaux",1802,1874,"French"),
+    ("Adolphe","","Adam",1803,1856,"French"),
+    ("Hector","","Berlioz",1803,1869,"French"),
+    ("Franz","","Lachner",1803,1890,"German"),
+    ("Mikhail","","Glinka",1804,1857,"Russian"),
+    ("Johann","","Strauss",1804,1849,"Austrian"),
+    ("Fanny","","Mendelssohn",1805,1847,"German"),
+    ("Johann","Friedrich Franz","Burgmüller",1806,1874,"German"),
+    ("Felix","","Mendelssohn",1809,1847,"German"),
+    ("Frédéric","","Chopin",1810,1849,"Polish-French"),
+    ("Robert","","Schumann",1810,1856,"German"),
+    ("Ferdinand","","David",1810,1873,"German"),
+    ("Franz","","Liszt",1811,1886,"Hungarian"),
+    ("Ferdinand","","Hiller",1811,1885,"German"),
+    ("Sigismond","","Thalberg",1812,1871,"Austrian"),
+    ("Richard","","Wagner",1813,1883,"German"),
+    ("Giuseppe","","Verdi",1813,1901,"Italian"),
+    ("Charles-Valentin","","Alkan",1813,1888,"French"),
+    ("Ferdinand","","Praeger",1815,1891,"German"),
+    ("Robert","","Volkmann",1815,1883,"German"),
+    ("William","Sterndale","Bennett",1816,1875,"English"),
+    ("Émile","","Prudent",1817,1863,"French"),
+    ("Clara","","Schumann",1819,1896,"German"),
+    ("Franz","","von Suppé",1819,1895,"Austrian"),
+    ("Stanisław","","Moniuszko",1819,1872,"Polish"),
+    ("Joachim","","Raff",1822,1882,"Swiss-born German"),
+    ("César","","Franck",1822,1890,"Belgian-born French"),
+    ("Anton","","Bruckner",1824,1896,"Austrian"),
+    ("Bedřich","","Smetana",1824,1884,"Czech"),
+    ("Johann","","Strauss",1825,1899,"Austrian"),
+    ("Richard","","Hol",1825,1904,"Dutch"),
+    ("Josef","","Strauss",1827,1870,"Austrian"),
+    ("Anton","","Rubinstein",1829,1894,"Russian"),
+    ("Joseph","","Joachim",1831,1907,"Hungarian"),
+    ("Johannes","","Brahms",1833,1897,"German"),
+    ("Eduard","","Strauss",1835,1916,"Austrian"),
+    ("Felix","","Draeseke",1835,1913,"German"),
+    ("Camille","","Saint-Saëns",1835,1921,"French"),
+    ("Max","","Bruch",1838,1920,"German"),
+    ("Modest","","Mussorgsky",1839,1881,"Russian"),
+    ("Pyotr","Ilyich","Tchaikovsky",1840,1893,"Russian"),
+    ("Antonín","","Dvořák",1841,1904,"Czech"),
+    ("Edvard","","Grieg",1843,1907,"Norwegian"),
+    ("David","","Popper",1843,1913,"Czech"),
+    ("Nikolai","","Rimsky-Korsakov",1844,1908,"Russian"),
+    ("Gabriel","","Fauré",1845,1924,"French"),
+    ("Robert","","Fuchs",1847,1927,"Austrian"),
+    ("Moritz","","Moszkowski",1854,1925,"German"),
+    ("Arnold","","Mendelssohn",1855,1933,"German"),
+    ("Edward","","Elgar",1857,1934,"English"),
+    ("Gustav","","Mahler",1860,1911,"Austrian"),
+    ("Hugo","","Wolf",1860,1903,"Austrian"),
+    ("Ignacy","Jan","Paderewski",1860,1941,"Polish"),
+    ("Isaac","","Albéniz",1860,1909,"Spanish"),
+    ("Edward","","MacDowell",1860,1908,"American"),
+    ("Richard","","Strauss",1864,1949,"German"),
+    ("Jean","","Sibelius",1865,1957,"Finnish"),
+    ("Johann","","Strauss",1866,1939,"Austrian"),
+    ("Ferruccio","","Busoni",1866,1924,"Italian"),
+    ("Scott","","Joplin",1868,1917,"American"),
+    ("Siegfried","","Wagner",1869,1930,"German"),
+    ("Franz","","Lehár",1870,1948,"Hungarian"),
+    ("Ludvík","","Čelanský",1870,1931,"Czech"),
+    ("Vítězslav","","Novák",1870,1949,"Czech"),
+    ("Charles","","Tournemire",1870,1939,"French"),
+    ("Louis","","Vierne",1870,1937,"French"),
+    ("Alexander","","Scriabin",1872,1915,"Russian"),
+    ("Ralph","Vaughan","Williams",1872,1958,"English"),
+    ("Sergei","","Rachmaninoff",1873,1943,"Russian"),
+    ("Franz","","Schmidt",1874,1939,"Austrian"),
+    ("Gustav","","Holst",1874,1934,"English"),
+    ("Serge","","Koussevitzky",1874,1951,"Russian"),
+    ("František","","Neumann",1874,1929,"Czech"),
+    ("Arnold","","Schoenberg",1874,1951,"Austrian"),
+    ("Josef","","Suk",1874,1935,"Czech"),
+    ("Richard","","Wetz",1875,1935,"German"),
+    ("Maurice","","Ravel",1875,1937,"French"),
+    ("Franz","","Schreker",1878,1934,"Austrian"),
+    ("Alma","","Mahler",1879,1964,"Austrian"),
+    ("Ottorino","","Respighi",1879,1936,"Italian"),
+    ("Béla","","Bartók",1881,1945,"Hungarian"),
+    ("George","","Enescu",1881,1955,"Romanian"),
+    ("Zoltán","","Kodály",1882,1967,"Hungarian"),
+    ("Igor","","Stravinsky",1882,1971,"Russian"),
+    ("Ladislav","","Vycpálek",1882,1969,"Czech"),
+    ("Edgard","","Varèse",1883,1965,"French"),
+    ("Alexander","","Albrecht",1885,1958,"Slovak"),
+    ("Marcel","","Dupré",1886,1971,"French"),
+    ("Egon","","Ledeč",1889,1944,"Czech"),
+    ("Vilém","","Petrželka",1889,1969,"Czech"),
+    ("Karel","Boleslav","Jirák",1891,1972,"Czechoslovak"),
+    ("Sergei","","Prokofiev",1891,1953,"Russian"),
+    ("Darius","","Milhaud",1892,1974,"French"),
+    ("John","Jacob","Niles",1892,1980,"American"),
+    ("Paul","","Hindemith",1895,1963,"German"),
+    ("Aaron","","Copland",1900,1990,"American"),
+    ("Jaroslav","","Ježek",1906,1942,"Czech"),
+    ("Dmitri","","Shostakovich",1906,1975,"Russian"),
+    ("Olivier","","Messiaen",1908,1992,"French"),
+    ("Samuel","","Barber",1910,1981,"American"),
+    ("John","","Cage",1912,1992,"American"),
+    ("Benjamin","","Britten",1913,1976,"English"),
+    ("Leonard","","Bernstein",1918,1990,"American")
+;
+
+INSERT INTO `era` (era_name,era_start,era_end,era_period) VALUES 
+    ("Ancient",NULL,500,"Ancient"),
+    ("Medieval",500,1400,"Early"),
+    ("Ars antique",1170,1310,"Early"),
+    ("Ars nova",1310,1377,"Early"),
+    ("Ars subtilior",1360,1420,"Early"),
+    ("Renaissance",1400,1600,"Early"),
+    ("Baroque",1600,1750,"Common-practice"),
+    ("Galant",1720,1780,"Common-practice"),
+    ("Classical",1750,1820,"Common-practice"),
+    ("Romantic",1780,1910,"Common-practice"),
+    ("Modernist",1890,1950,"20th/21st century"),
+    ("Impressionism",1890,1925,"20th/21st century"),
+    ("Expressionism",1908,1925,"20th/21st century"),
+    ("Neoclassicism",1920,1950,"20th/21st century"),
+    ("Postmodern/Contemporary",1930,NULL,"20th/21st century"),
+    ("Experimental",1950,NULL,"20th/21st century"),
+    ("Minimalism",1965,NULL,"20th/21st century"),
+    ("20th Century",1900,2000,"20th/21st century")
+;
+
+INSERT INTO `composer_era` (comp_id,era_id) VALUES
+    (1,7),
+    (2,7),
+    (3,7),
+    (4,7),
+    (5,7),
+    (6,7),
+    (7,7),
+    (8,7),
+    (9,7),
+    (10,7),
+    (11,7),
+    (12,7),
+    (13,7),
+    (14,7),
+    (15,7),
+    (16,7),
+    (17,7),
+    (18,7),
+    (19,7),
+    (20,7),
+    (21,7),
+    (22,7),
+    (23,7),
+    (23,8),
+    (23,9),
+    (24,7),
+    (25,7),
+    (26,7),
+    (26,8),
+    (26,9),
+    (27,7),
+    (28,7),
+    (29,7),
+    (30,7),
+    (30,8),
+    (30,9),
+    (31,7),
+    (32,8),
+    (32,9),
+    (33,7),
+    (34,8),
+    (34,9),
+    (35,7),
+    (36,7),
+    (36,8),
+    (36,9),
+    (37,7),
+    (38,7),
+    (38,8),
+    (38,9),
+    (39,7),
+    (39,8),
+    (39,9),
+    (40,7),
+    (40,8),
+    (40,9),
+    (41,7),
+    (41,8),
+    (41,9),
+    (42,7),
+    (43,8),
+    (43,9),
+    (44,8),
+    (44,9),
+    (45,7),
+    (46,7),
+    (46,8),
+    (46,9),
+    (47,7),
+    (48,7),
+    (48,8),
+    (48,9),
+    (49,8),
+    (49,9),
+    (50,7),
+    (50,8),
+    (50,9),
+    (51,7),
+    (51,8),
+    (51,9),
+    (52,7),
+    (53,8),
+    (53,9),
+    (54,7),
+    (54,8),
+    (54,9),
+    (55,7),
+    (56,8),
+    (56,9),
+    (57,7),
+    (57,9),
+    (58,7),
+    (59,9),
+    (60,7),
+    (60,9),
+    (61,7),
+    (61,9),
+    (62,9),
+    (63,7),
+    (63,9),
+    (64,9),
+    (65,9),
+    (66,9),
+    (67,9),
+    (68,9),
+    (69,9),
+    (70,9),
+    (71,9),
+    (72,9),
+    (73,9),
+    (74,9),
+    (75,9),
+    (76,7),
+    (77,9),
+    (78,9),
+    (79,9),
+    (80,9),
+    (81,9),
+    (82,9),
+    (83,9),
+    (84,9),
+    (85,9),
+    (86,9),
+    (87,9),
+    (88,9),
+    (89,9),
+    (90,9),
+    (91,9),
+    (92,9),
+    (93,9),
+    (94,9),
+    (95,9),
+    (96,9),
+    (97,9),
+    (97,10),
+    (98,9),
+    (98,10),
+    (99,9),
+    (99,10),
+    (100,9),
+    (100,10),
+    (101,9),
+    (101,10),
+    (102,9),
+    (102,10),
+    (103,10),
+    (104,9),
+    (104,10),
+    (105,10),
+    (106,9),
+    (106,10),
+    (107,9),
+    (107,10),
+    (108,9),
+    (108,10),
+    (109,9),
+    (109,10),
+    (110,10),
+    (111,9),
+    (111,10),
+    (112,9),
+    (112,10),
+    (113,10),
+    (114,9),
+    (114,10),
+    (115,9),
+    (115,10),
+    (116,9),
+    (116,10),
+    (117,10),
+    (118,9),
+    (118,10),
+    (119,10),
+    (120,9),
+    (120,10),
+    (121,9),
+    (121,10),
+    (122,9),
+    (122,10),
+    (123,10),
+    (124,9),
+    (124,10),
+    (125,9),
+    (125,10),
+    (126,10),
+    (127,10),
+    (128,10),
+    (129,9),
+    (129,10),
+    (130,10),
+    (131,10),
+    (132,9),
+    (132,10),
+    (133,9),
+    (133,10),
+    (134,9),
+    (134,10),
+    (135,10),
+    (136,10),
+    (137,10),
+    (138,10),
+    (139,10),
+    (140,10),
+    (141,10),
+    (142,10),
+    (143,10),
+    (144,10),
+    (145,10),
+    (146,10),
+    (147,10),
+    (148,10),
+    (149,10),
+    (150,10),
+    (151,10),
+    (152,10),
+    (153,10),
+    (154,10),
+    (155,10),
+    (156,10),
+    (157,10),
+    (158,10),
+    (159,10),
+    (160,10),
+    (161,10),
+    (162,10),
+    (163,10),
+    (164,10),
+    (165,10),
+    (166,10),
+    (167,10),
+    (168,10),
+    (169,10),
+    (170,10),
+    (171,10),
+    (172,10),
+    (173,10),
+    (174,10),
+    (175,10),
+    (176,10),
+    (177,10),
+    (178,10),
+    (179,10),
+    (180,10),
+    (181,10),
+    (182,10),
+    (183,10),
+    (184,10),
+    (185,10),
+    (186,10),
+    (187,10),
+    (188,10),
+    (189,10),
+    (190,10),
+    (191,10),
+    (192,10),
+    (193,10),
+    (194,10),
+    (195,10),
+    (196,10),
+    (197,10),
+    (198,10),
+    (199,18),
+    (200,18),
+    (201,18),
+    (202,10),
+    (202,18),
+    (203,18),
+    (204,10),
+    (204,18),
+    (205,10),
+    (205,18),
+    (206,18),
+    (207,18),
+    (208,18),
+    (209,18),
+    (210,18),
+    (211,10),
+    (212,18),
+    (213,10),
+    (214,10),
+    (215,18),
+    (216,18),
+    (217,18),
+    (218,18),
+    (219,18),
+    (220,18),
+    (221,18),
+    (222,18),
+    (223,18),
+    (224,18),
+    (225,18),
+    (226,18),
+    (227,18),
+    (228,18),
+    (229,18),
+    (230,18),
+    (231,18),
+    (232,18),
+    (233,18),
+    (234,18),
+    (235,18),
+    (236,18),
+    (237,18),
+    (238,18)
+;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Anton%C3%ADn_Dvo%C5%99%C3%A1k",
+	comp_imslp = "https://imslp.org/wiki/Category:Dvo%C5%99%C3%A1k,_Anton%C3%ADn"
+WHERE comp_id = 177
+;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach",
+	comp_imslp = "https://imslp.org/wiki/Category:Bach,_Johann_Sebastian"
+WHERE comp_id = 38
+;
+
+UPDATE `composer`
+SET
+	comp_wiki = "https://en.wikipedia.org/wiki/Johannes_Brahms",
+	comp_imslp = "https://imslp.org/wiki/Category:Brahms,_Johannes"
+WHERE comp_id = 170
+;
+
 SET foreign_key_checks=0;
 INSERT INTO `work` (work_id,work_title,work_alttitle,work_opus,work_identifier,work_mvtitle,work_mvnumber,work_yearbegun,work_yearcompleted,work_yearpublished,work_yearpremiered,work_relatedto,work_measures,work_genre,work_form,work_note,work_wiki,work_imslp,work_viaf,comp_id,era_id) VALUES
     (1,"Symphony No. 1 in C minor ""The Bells of Zlonice""","Symfonie č. 1 c moll „Zlonické zvony“","Op. 3","B. 9","I. Maestoso — allegro",1,1865,1865,1961,1936,NULL,NULL,"Orchestral",NULL,NULL,"https://en.wikipedia.org/wiki/Symphony_No._1_(Dvo%C5%99%C3%A1k)","https://imslp.org/wiki/Symphony_No.1,_B.9_(Dvo%C5%99%C3%A1k,_Anton%C3%ADn)",NULL,177,10),
@@ -89,8 +905,8 @@ INSERT INTO `work` (work_id,work_title,work_alttitle,work_opus,work_identifier,w
     (87,"Hungarian Dances","Ungarische Tänze","WoO 1",NULL,"No. 20 	in E minor. Poco allegretto – Vivace",20,1879,1879,1880,NULL,NULL,NULL,"Piano",NULL,"Part of Book 4","https://en.wikipedia.org/wiki/Hungarian_Dances_(Brahms)","https://imslp.org/wiki/21_Hungarian_Dances_(Piano),_WoO_1_(Brahms,_Johannes)",175067739,170,10),
     (88,"Hungarian Dances","Ungarische Tänze","WoO 1",NULL,"No. 21 in E minor. Vivace – E major. Più presto",21,1879,1879,1880,NULL,NULL,NULL,"Piano",NULL,"Part of Book 4","https://en.wikipedia.org/wiki/Hungarian_Dances_(Brahms)","https://imslp.org/wiki/21_Hungarian_Dances_(Piano),_WoO_1_(Brahms,_Johannes)",175067739,170,10),
     (89,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1047",NULL,"I. Allegro",1,1718,1721,1851,NULL,NULL,119,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7),
-    (90,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1048",NULL,"II. Andante",2,1718,1721,1851,NULL,NULL,65,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7),
-    (91,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1049",NULL,"III. Allegro assai",3,1718,1721,1851,NULL,NULL,139,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7)
+    (90,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1047",NULL,"I. Andante",2,1718,1721,1851,NULL,NULL,65,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7),
+    (91,"Brandenburg Concerto No. 2 in F Major","2. Brandenburgisches Konzert","BWV 1047",NULL,"III. Allegro assai",3,1718,1721,1851,NULL,NULL,139,"Chamber Music",NULL,NULL,"http://en.wikipedia.org/wiki/Brandenburg_Concertos#No._2_in_F_major.2C_BWV_1047","https://imslp.org/wiki/Brandenburg_Concerto_No.2_in_F_major%2C_BWV_1047_(Bach%2C_Johann_Sebastian)",178025615,38,7)
 ;
 
 INSERT INTO `key` (key_id,key_name,key_relative,key_accnum,key_acctype,key_enharmonic) VALUES
@@ -125,7 +941,6 @@ INSERT INTO `key` (key_id,key_name,key_relative,key_accnum,key_acctype,key_enhar
     (29,"D# minor",14,6,"sharp",17),
     (30,"A# minor",15,7,"sharp",18)
 ;
-
 
 INSERT INTO `work_key` (work_id,key_id) VALUES
     (1,20),
@@ -1694,3 +2509,107 @@ INSERT INTO `work_time` (work_id,time_id) VALUES
 ;
 
 SET foreign_key_checks=1;
+
+
+
+
+
+
+
+
+
+
+-- TABLE QUERIES --
+
+
+-- 1. Show all works that use piano
+
+SELECT
+	wv_title AS `Title`,
+    wv_composer AS `Composer`,
+    wv_instruments AS `Instruments`
+FROM `work_view` WHERE wv_instruments LIKE "piano";
+
+
+-- 2. Show all Czech composers, alphabetized by last name
+
+SELECT
+	CONCAT(comp_lname,', ',comp_fname, ' ',comp_mname) AS `Name`,
+    comp_nationality AS `Nationality`
+FROM composer
+WHERE comp_nationality = "Czech"
+ORDER BY comp_lname;
+
+
+-- 3. Show all works written in a compound meter (3/4, 6/8, 9/8, 12/8)
+
+SELECT
+	CONCAT(work_title,', ',work_mvtitle) AS `Title`,
+	T.time_name as `Time signature`
+FROM `work` AS W
+JOIN `work_time` AS WT on W.work_id = WT.work_id
+JOIN `time` as T on WT.time_id = T.time_id
+WHERE time_name in ('3/4','6/8','9/8','12/8')
+;
+
+
+-- 4. Show the number of Dvorak's works written in each key
+
+SELECT
+	K.key_name AS `Key signature`,
+    COUNT(*) AS `Number of works`
+FROM `work` AS W
+JOIN `work_key` AS WK ON W.work_id = WK.work_id
+JOIN `key` AS K ON WK.key_id = K.key_id
+WHERE W.comp_id = (SELECT C.comp_id FROM `composer` AS C WHERE comp_lname = "Dvorak")
+GROUP BY K.key_name
+;
+
+-- 5. Show all Czech composers born within 40 years of Antonin Dvorak
+
+SELECT
+    CONCAT_WS(' ',comp_fname,comp_mname,comp_lname) AS `Name`,
+    CONCAT(comp_birthyear,'-',comp_deathyear) AS `Years`,
+    comp_nationality AS `Nationality`
+FROM `composer`
+WHERE
+	comp_nationality = 'Czech' AND
+    comp_birthyear BETWEEN
+        (SELECT comp_birthyear FROM `composer` WHERE comp_lname = "Dvorak") - 40 AND
+		(SELECT comp_birthyear FROM `composer` WHERE comp_lname = "Dvorak") + 40
+ORDER BY comp_birthyear;
+
+
+-- 6. Show the tempos of all third movements in Dvorak's works
+
+SELECT
+	CONCAT(work_title,', ',work_mvtitle) AS Title,
+    work_mvnumber AS `Movement number`,
+	CONCAT_WS(' ',comp_fname,comp_mname,comp_lname) AS Composer,
+    GROUP_CONCAT(T.tempo_marking SEPARATOR ', ') AS Tempo
+FROM `work` AS W
+LEFT JOIN `composer` AS C ON W.comp_id = C.comp_id
+LEFT JOIN `work_tempo` AS WT on W.work_id = WT.work_id
+LEFT JOIN `tempo` AS T on WT.tempo_id = T.tempo_id
+WHERE C.comp_lname = "Dvorak" AND W.work_mvnumber = 3
+GROUP BY W.work_id
+ORDER BY W.work_id;
+    
+
+-- 7. Show all Dvorak's works completed while Brahms was writing his Hungarian Dances
+
+SELECT W.work_title AS Title, W.work_yearcompleted AS `Year Completed`
+FROM `work` AS W
+JOIN `composer` AS C ON W.comp_id = C.comp_id
+WHERE
+	W.comp_id = (SELECT comp_id FROM `composer` WHERE comp_lname = "Dvorak") AND
+    W.work_yearcompleted BETWEEN
+		(SELECT MIN(work_yearbegun)
+        FROM `work` AS W JOIN `composer` AS C ON W.comp_id = C.comp_id
+        WHERE comp_lname = "Brahms") AND
+		(SELECT MAX(work_yearcompleted)
+        FROM `work` AS W JOIN `composer` AS C ON W.comp_id = C.comp_id
+        WHERE comp_lname = "Brahms")
+GROUP BY work_title
+ORDER BY W.work_yearcompleted
+;
