@@ -4,10 +4,27 @@
 <div class="content">
 <br>
 
-
-<h1>Brandenburg Concerto No. 2 in F major, BWV 1047, I. Allegro</h1>
-<p>Johann Sebastian Bach (1685-1750)</p>
-
+<div itemscope itemtype="https://schema.org/MusicComposition" class="microdata">
+    <h1>
+    <span itemprop="name">Brandenburg Concerto 
+        <span itemprop="disambiguatingDescription">No. 2</span> in 
+        <span itemprop="musicalKey">F major</span>, 
+        <span itemprop="identifier">BWV 1047</span>, 
+        <meta itemprop="iswcCode" content="T-909.240.367-3" />
+        <meta itemprop="dateCreated" content="1721"/>
+        <div itemprop="includedComposition" itemscope itemtype="https://schema.org/MusicComposition" class="microdata">
+            <span itemprop="disambiguatingDescription">I.</span> 
+            <span itemprop="name">Allegro</span>
+        </div>
+    </span>
+    </h1>
+    <div itemprop="composer" itemscope itemtype="https://schema.org/Person" class="microdata">
+        <meta itemprop="identifier" content="http://id.loc.gov/authorities/names/n79021425"/>
+        <span itemprop="name">Johann Sebastian Bach</span> (
+        <span itemprop="birthDate" scheme="ISO8601">1685</span> -
+        <span itemprop="deathDate" scheme="ISO8601">1750</span> )
+    </div>
+</div>
 <br>
 <br>
 <h2>Work Information</h2>
