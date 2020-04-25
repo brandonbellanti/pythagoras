@@ -6,7 +6,8 @@
 		<encoding>
 			<encoding-date>2020-02-25</encoding-date>
 			<software>CapToMusic.py CapXML to MusicXML converter version 2.9</software>
-			<encoding-description>Options: FinaleDolet33=1, ChordCaseMatters=1, ExportToSibelius=0</encoding-description>
+			<encoding-description>Options: FinaleDolet33=1, ChordCaseMatters=1,
+				ExportToSibelius=0</encoding-description>
 		</encoding>
 	</identification>
 	<defaults>
@@ -34,12 +35,13 @@
 		</system-layout>
 	</defaults>
 	<credit>
-		<credit-words default-x="87" default-y="1808" font-family="Times New Roman" font-size="9.216">elise / M. Hajek 1996                                                                        # / 3</credit-words>
+		<credit-words default-x="87" default-y="1808" font-family="Times New Roman"
+			font-size="9.216">elise / M. Hajek 1996 # / 3</credit-words>
 	</credit>
 	<part-list>
 		<score-part id="P1">
-			<part-name></part-name>
-			<part-abbreviation></part-abbreviation>
+			<part-name/>
+			<part-abbreviation/>
 			<score-instrument id="P1-I1">
 				<instrument-name>Midi_2</instrument-name>
 			</score-instrument>
@@ -90,19 +92,22 @@
 			</attributes>
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="808" default-y="25" font-family="Times New Roman" font-size="9.216" font-weight="bold">L.v.Beethoven  Wo O 59</words>
+					<words relative-x="808" default-y="25" font-family="Times New Roman"
+						font-size="9.216" font-weight="bold">L.v.Beethoven Wo O 59</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="-48" default-y="18" font-family="Times New Roman" font-size="11">Poco moto</words>
+					<words relative-x="-48" default-y="18" font-family="Times New Roman"
+						font-size="11">Poco moto</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="236" default-y="85" font-family="Times New Roman" font-size="28" font-style="italic">KLAVIERSTÜCK</words>
+					<words relative-x="236" default-y="85" font-family="Times New Roman"
+						font-size="28" font-style="italic">KLAVIERSTÜCK</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
@@ -156,7 +161,8 @@
 		<measure number="1">
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="300" default-y="48" font-family="Times New Roman" font-size="17" font-style="italic">Für Elise</words>
+					<words relative-x="300" default-y="48" font-family="Times New Roman"
+						font-size="17" font-style="italic">Für Elise</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
@@ -10623,7 +10629,8 @@
 		<measure number="76">
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="18" default-y="50" font-family="Times New Roman" font-size="9">..............................</words>
+					<words relative-x="18" default-y="50" font-family="Times New Roman"
+						font-size="9">..............................</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
@@ -10864,7 +10871,8 @@
 			</print>
 			<direction placement="above">
 				<direction-type>
-					<words relative-x="-2" default-y="47" font-family="Times New Roman" font-size="9">..........................................</words>
+					<words relative-x="-2" default-y="47" font-family="Times New Roman"
+						font-size="9">..........................................</words>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
